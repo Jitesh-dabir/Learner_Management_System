@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class UserDTO {
 
+    private long id;
     private String first_name;
     private String last_name;
     private String email;
@@ -14,6 +15,15 @@ public class UserDTO {
     private String creator_user;
 
     //Getter and Setter
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getFirst_name() {
         return first_name;
     }

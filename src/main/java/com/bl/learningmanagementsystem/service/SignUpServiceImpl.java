@@ -1,6 +1,6 @@
 package com.bl.learningmanagementsystem.service;
 
-import com.bl.learningmanagementsystem.dto.LoginResponse;
+import com.bl.learningmanagementsystem.dto.Response;
 import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.UserRepository;
 import com.bl.learningmanagementsystem.dto.UserDTO;
@@ -24,13 +24,13 @@ public class SignUpServiceImpl implements SignUpService {
     private ModelMapper modelMapper;
 
     @Override
-    public LoginResponse save(UserDTO user) {
+    public Response save(UserDTO user) {
         user.setCreator_stamp(LocalDateTime.now());
         user.setCreator_user(user.getFirst_name());
         user.setVerified("yes");
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
         User newUser = modelMapper.map(user, User.class);
         userRepository.save(newUser);
-        return new LoginResponse(200, "Register successfull");
+        return new Response(200, "Register successfull");
     }
 }

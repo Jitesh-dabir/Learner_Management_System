@@ -2,11 +2,12 @@ package com.bl.learningmanagementsystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Table(name = "user_details")
 @Entity(name = "user_details")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
