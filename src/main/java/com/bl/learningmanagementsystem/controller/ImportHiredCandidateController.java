@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-public class HiredCandidateController {
+public class ImportHiredCandidateController {
 
     @Autowired
     HiredCandidateServiceImpl hiredCandidateService;
