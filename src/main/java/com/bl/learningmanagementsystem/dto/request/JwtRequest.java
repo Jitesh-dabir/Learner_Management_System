@@ -1,4 +1,4 @@
-package com.bl.learningmanagementsystem.dto;
+package com.bl.learningmanagementsystem.dto.request;
 import java.io.Serializable;
 
 public class JwtRequest implements Serializable {

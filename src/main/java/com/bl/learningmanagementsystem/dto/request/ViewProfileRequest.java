@@ -1,4 +1,4 @@
-package com.bl.learningmanagementsystem.dto;
+package com.bl.learningmanagementsystem.dto.request;
 
 public class ViewProfileRequest {
 

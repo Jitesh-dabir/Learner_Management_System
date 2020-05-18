@@ -1,8 +1,9 @@
-package com.bl.learningmanagementsystem.service;
+package com.bl.learningmanagementsystem.serviceimpl;
 
-import com.bl.learningmanagementsystem.dto.HiredCandidate;
+import com.bl.learningmanagementsystem.dto.response.HiredCandidate;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
+import com.bl.learningmanagementsystem.service.HiredCandidateService;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -96,5 +97,16 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
             HiredCandidateModel hiredCandidateModel = modelMapper.map(hiredCandidate, HiredCandidateModel.class);
             hiredCandidateRepository.save(hiredCandidateModel);
         }
+    }
+
+    @Override
+    public List getHiredCandidates() {
+        return hiredCandidateRepository.findAll();
+    }
+
+    @Override
+    public HiredCandidateModel findByFirst_name(String name) {
+        HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findByFirst_name(name);
+        return hiredCandidateModel;
     }
 }
