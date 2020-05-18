@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class SignUpController {
 
@@ -16,7 +18,7 @@ public class SignUpController {
     private SignUpServiceImpl signUpService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(signUpService.save(user));
     }
 }
