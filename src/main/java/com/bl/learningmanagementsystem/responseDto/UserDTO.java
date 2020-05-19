@@ -1,7 +1,6 @@
-package com.bl.learningmanagementsystem.dto;
+package com.bl.learningmanagementsystem.responseDto;
 
 import com.sun.istack.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;

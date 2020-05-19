@@ -1,14 +1,13 @@
 package com.bl.learningmanagementsystem.controller;
 
-import com.bl.learningmanagementsystem.dto.request.JwtRequest;
-import com.bl.learningmanagementsystem.dto.request.PasswordRequestModel;
-import com.bl.learningmanagementsystem.dto.request.PasswordResetModel;
-import com.bl.learningmanagementsystem.dto.request.UserDTO;
-import com.bl.learningmanagementsystem.dto.response.JwtResponse;
-import com.bl.learningmanagementsystem.dto.response.Response;
+import com.bl.learningmanagementsystem.responseDto.JwtRequest;
+import com.bl.learningmanagementsystem.responseDto.PasswordResetModel;
+import com.bl.learningmanagementsystem.responseDto.UserDTO;
+import com.bl.learningmanagementsystem.dto.JwtResponse;
+import com.bl.learningmanagementsystem.dto.Response;
 import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.UserRepository;
-import com.bl.learningmanagementsystem.serviceimpl.UserDetailsServiceImpl;
+import com.bl.learningmanagementsystem.service.UserDetailsServiceImpl;
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +39,7 @@ public class UserController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -63,29 +62,29 @@ public class UserController {
         }
     }
 
-    @RequestMapping({"/login"})
+    @GetMapping("/login")
     public String login() {
         return "Login successFull";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     public ResponseEntity<?> saveUser(@Valid @RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(userDetailsService.save(user));
     }
 
-    @GetMapping("/request_reset_password")
-    public Response requestResetPassword(@Valid @RequestBody PasswordRequestModel passwordRequestModel) throws AddressException, MessagingException {
-        User user = userRepository.findByEmail(passwordRequestModel.getEmail());
+    @GetMapping("/requestResetPassword")
+    public Response requestResetPassword(@Valid @RequestParam(value = "email") String email) throws AddressException, MessagingException {
+        User user = userRepository.findByEmail(email);
         final String token = jwtTokenUtil.generatePasswordResetToken(String.valueOf(user.getId()));
         userDetailsService.sentEmail(user, token);
         return new Response(200, token);
     }
 
-    @PutMapping("/reset_password")
+    @PutMapping("/resetPassword")
     public Response resetPassword(@Valid @RequestBody PasswordResetModel passwordRequestModel) {
         boolean result = userDetailsService.resetPassword(passwordRequestModel.getPassword(), passwordRequestModel.getToken());
         if (result)
             return new Response(200, "Successfully updated");
         return new Response(500, "UnSuccessFull");
-    }
+    } 
 }

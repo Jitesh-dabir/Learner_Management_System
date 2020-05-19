@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
-import com.bl.learningmanagementsystem.serviceimpl.UserDetailsServiceImpl;
+import com.bl.learningmanagementsystem.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

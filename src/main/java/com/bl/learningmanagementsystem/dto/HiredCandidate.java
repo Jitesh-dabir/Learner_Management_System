@@ -1,4 +1,4 @@
-package com.bl.learningmanagementsystem.dto.response;
+package com.bl.learningmanagementsystem.dto;
 
 import java.util.Date;
 
