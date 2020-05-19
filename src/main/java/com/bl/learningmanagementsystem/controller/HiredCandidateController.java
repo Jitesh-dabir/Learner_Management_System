@@ -17,8 +17,7 @@ public class HiredCandidateController {
     private HiredCandidateServiceImpl hiredCandidateService;
 
     @PostMapping("/importHiredCandidate")
-    public Response importHiredCandidate() throws IOException {
-        String filename = "./src/main/resources/HiredCandidates.xlsx";
+    public Response importHiredCandidate(@RequestParam(value = "path") String filename) throws IOException {
         List hiredCandidate = hiredCandidateService.getHiredCandidate(filename);
         return new Response(200, "Successfully imported");
     }
