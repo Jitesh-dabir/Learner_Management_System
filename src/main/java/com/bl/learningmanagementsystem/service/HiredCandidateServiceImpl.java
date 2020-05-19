@@ -3,8 +3,6 @@ package com.bl.learningmanagementsystem.service;
 import com.bl.learningmanagementsystem.dto.HiredCandidate;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
-import com.bl.learningmanagementsystem.service.HiredCandidateService;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -30,7 +28,7 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
     private ModelMapper modelMapper;
 
     @Override
-    public List getHiredCandidate(@RequestParam(value = "path") String filePath) throws IOException {
+    public void getHiredCandidate(@RequestParam(value = "path") String filePath) throws IOException {
         boolean flag = true;
         List sheetData = new ArrayList();
         HiredCandidate hiredCandidate = new HiredCandidate();
@@ -88,7 +86,6 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return sheetData;
     }
 
     @Override

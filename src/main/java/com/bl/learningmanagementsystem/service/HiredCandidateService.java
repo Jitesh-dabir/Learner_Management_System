@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface HiredCandidateService {
-    List getHiredCandidate(String filePath) throws IOException;
+    void getHiredCandidate(String filePath) throws IOException;
 
     void save(HiredCandidate hiredCandidate);
 
