@@ -1,4 +1,4 @@
-package com.bl.learningmanagementsystem.dto.request;
+package com.bl.learningmanagementsystem.dto;
 
 import com.sun.istack.NotNull;
 import org.hibernate.validator.constraints.Length;
