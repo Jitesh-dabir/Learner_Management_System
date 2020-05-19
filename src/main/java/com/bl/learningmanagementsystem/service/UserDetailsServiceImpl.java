@@ -1,10 +1,10 @@
-package com.bl.learningmanagementsystem.serviceimpl;
+package com.bl.learningmanagementsystem.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import com.bl.learningmanagementsystem.dto.response.Response;
-import com.bl.learningmanagementsystem.dto.UserDTO;
+import com.bl.learningmanagementsystem.dto.Response;
+import com.bl.learningmanagementsystem.responseDto.UserDTO;
 import com.bl.learningmanagementsystem.repository.UserRepository;
 import com.bl.learningmanagementsystem.service.UserService;
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
