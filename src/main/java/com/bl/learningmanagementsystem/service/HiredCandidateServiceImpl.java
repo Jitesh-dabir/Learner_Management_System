@@ -28,7 +28,7 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
     private ModelMapper modelMapper;
 
     @Override
-    public void getHiredCandidate(@RequestParam(value = "path") String filePath) throws IOException {
+    public void getHiredCandidate(String filePath) throws IOException {
         boolean flag = true;
         List sheetData = new ArrayList();
         HiredCandidate hiredCandidate = new HiredCandidate();
