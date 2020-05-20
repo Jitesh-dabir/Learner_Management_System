@@ -1,6 +1,6 @@
 package com.bl.learningmanagementsystem.service;
 
-import com.bl.learningmanagementsystem.dto.HiredCandidate;
+import com.bl.learningmanagementsystem.responsedto.HiredCandidate;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -10,7 +10,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.FileInputStream;
 import java.io.IOException;

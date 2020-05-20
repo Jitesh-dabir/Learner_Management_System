@@ -1,4 +1,4 @@
-package com.bl.learningmanagementsystem.responseDto;
+package com.bl.learningmanagementsystem.dto;
 
 import javax.validation.constraints.Pattern;
 

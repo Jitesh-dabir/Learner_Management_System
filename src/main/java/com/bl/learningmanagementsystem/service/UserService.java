@@ -1,10 +1,7 @@
 package com.bl.learningmanagementsystem.service;
 
-import com.bl.learningmanagementsystem.dto.Response;
-import com.bl.learningmanagementsystem.responseDto.UserDTO;
-import com.bl.learningmanagementsystem.model.User;
-
-import javax.mail.MessagingException;
+import com.bl.learningmanagementsystem.responsedto.Response;
+import com.bl.learningmanagementsystem.dto.UserDTO;
 
 public interface UserService {
     Response save(UserDTO user);

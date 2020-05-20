@@ -3,15 +3,12 @@ package com.bl.learningmanagementsystem.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import com.bl.learningmanagementsystem.dto.Response;
-import com.bl.learningmanagementsystem.responseDto.UserDTO;
+import com.bl.learningmanagementsystem.responsedto.Response;
+import com.bl.learningmanagementsystem.dto.UserDTO;
 import com.bl.learningmanagementsystem.repository.UserRepository;
-import com.bl.learningmanagementsystem.service.UserService;
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.bl.learningmanagementsystem.model.User;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 
 @Service

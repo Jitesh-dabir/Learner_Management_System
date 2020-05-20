@@ -1,10 +1,10 @@
 package com.bl.learningmanagementsystem.controller;
 
-import com.bl.learningmanagementsystem.responseDto.JwtRequest;
-import com.bl.learningmanagementsystem.responseDto.PasswordResetModel;
-import com.bl.learningmanagementsystem.responseDto.UserDTO;
-import com.bl.learningmanagementsystem.dto.JwtResponse;
-import com.bl.learningmanagementsystem.dto.Response;
+import com.bl.learningmanagementsystem.dto.JwtRequest;
+import com.bl.learningmanagementsystem.dto.PasswordResetModel;
+import com.bl.learningmanagementsystem.dto.UserDTO;
+import com.bl.learningmanagementsystem.responsedto.JwtResponse;
+import com.bl.learningmanagementsystem.responsedto.Response;
 import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.UserRepository;
 import com.bl.learningmanagementsystem.service.EmailServiceImpl;

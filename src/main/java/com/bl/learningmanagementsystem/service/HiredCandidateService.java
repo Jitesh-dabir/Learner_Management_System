@@ -1,6 +1,6 @@
 package com.bl.learningmanagementsystem.service;
 
-import com.bl.learningmanagementsystem.dto.HiredCandidate;
+import com.bl.learningmanagementsystem.responsedto.HiredCandidate;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 
 import java.io.IOException;

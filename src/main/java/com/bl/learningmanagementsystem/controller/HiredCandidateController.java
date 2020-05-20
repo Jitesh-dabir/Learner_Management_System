@@ -1,6 +1,6 @@
 package com.bl.learningmanagementsystem.controller;
 
-import com.bl.learningmanagementsystem.dto.Response;
+import com.bl.learningmanagementsystem.responsedto.Response;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.service.HiredCandidateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
