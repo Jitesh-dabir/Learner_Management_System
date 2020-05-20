@@ -33,10 +33,14 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
         List sheetData = new ArrayList();
         HiredCandidate hiredCandidate = new HiredCandidate();
         try (FileInputStream fis = new FileInputStream(filePath)) {
+            //Create Workbook instance holding reference to .xlsx file
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            //Get first/desired sheet from the workbook
             XSSFSheet sheet = workbook.getSheetAt(0);
+            //Iterate through each rows one by one
             Iterator rows = sheet.rowIterator();
             XSSFCell cell;
+            //For each row, iterate through all the columns
             while (rows.hasNext()) {
                 XSSFRow row = (XSSFRow) rows.next();
                 Iterator cells = row.cellIterator();

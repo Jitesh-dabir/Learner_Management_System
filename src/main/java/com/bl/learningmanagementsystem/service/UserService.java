@@ -8,6 +8,6 @@ import javax.mail.MessagingException;
 
 public interface UserService {
     Response save(UserDTO user);
+
     boolean resetPassword(String password, String token);
-    void sentEmail(User user, String token) throws MessagingException;
 }

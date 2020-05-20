@@ -42,8 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     @Autowired
     private EntityManager entityManager;
 
-    @Autowired
-    private JavaMailSender sender;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -81,16 +79,5 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         if (updatedUser != null && updatedUser.getPassword().equalsIgnoreCase(encodedPassword))
             return true;
         return false;
-    }
-    @Override
-    public void sentEmail(User user, String token) throws MessagingException {
-        String recipientAddress = user.getEmail();
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setTo(recipientAddress);
-        helper.setText("Hii " + user.getFirst_name() + "\n" + " You requested to reset password, if YES then click on link put your new password and NO then ignore \n" +
-                "http://localhost:8084/reset_password?json={%22password%22:%22" + null + "%22+,%22token%22:" + token + "}");
-        helper.setSubject("Password-Reset-Request");
-        sender.send(message);
     }
 }

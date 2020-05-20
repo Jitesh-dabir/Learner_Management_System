@@ -7,6 +7,7 @@ import com.bl.learningmanagementsystem.dto.JwtResponse;
 import com.bl.learningmanagementsystem.dto.Response;
 import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.UserRepository;
+import com.bl.learningmanagementsystem.service.EmailServiceImpl;
 import com.bl.learningmanagementsystem.service.UserDetailsServiceImpl;
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class UserController {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private EmailServiceImpl emailService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -76,7 +80,7 @@ public class UserController {
     public Response requestResetPassword(@Valid @RequestParam(value = "email") String email) throws AddressException, MessagingException {
         User user = userRepository.findByEmail(email);
         final String token = jwtTokenUtil.generatePasswordResetToken(String.valueOf(user.getId()));
-        userDetailsService.sentEmail(user, token);
+        emailService.sentEmail(user, token);
         return new Response(200, token);
     }
 
