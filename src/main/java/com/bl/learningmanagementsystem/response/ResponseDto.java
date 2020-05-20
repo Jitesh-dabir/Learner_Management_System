@@ -1,11 +1,11 @@
 package com.bl.learningmanagementsystem.response;
 
-public class Response {
+public class ResponseDto {
 
     int status;
     String message;
 
-    public Response(int status, String message) {
+    public ResponseDto(int status, String message) {
         this.status = status;
         this.message = message;
     }

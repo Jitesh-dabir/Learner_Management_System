@@ -10,7 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class EmailServiceImpl {
+public class EmailService {
 
     @Autowired
     private JavaMailSender sender;

@@ -50,7 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private EmailServiceImpl emailService;
+    private EmailService emailService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

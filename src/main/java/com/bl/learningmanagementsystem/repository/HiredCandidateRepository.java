@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface HiredCandidateRepository extends JpaRepository<HiredCandidateModel, Integer> {
-    @Query("select h from hired_candidate h where h.first_name = ?1")
-    HiredCandidateModel findByFirst_name(String first_name);
+    @Query("select h from hired_candidate h where h.firstName = ?1")
+    HiredCandidateModel findByFirstName(String firstName);
 }
