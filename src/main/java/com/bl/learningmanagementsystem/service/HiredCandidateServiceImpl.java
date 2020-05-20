@@ -1,6 +1,6 @@
 package com.bl.learningmanagementsystem.service;
 
-import com.bl.learningmanagementsystem.responsedto.HiredCandidate;
+import com.bl.learningmanagementsystem.dto.HiredCandidateDto;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -10,15 +10,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
 @Service
-public class HiredCandidateServiceImpl implements HiredCandidateService {
+public class HiredCandidateServiceImpl implements IHiredCandidateService {
 
     @Autowired
     private HiredCandidateRepository hiredCandidateRepository;
@@ -26,12 +26,12 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
     @Autowired
     private ModelMapper modelMapper;
 
+    //Method to read excel file and store data to database
     @Override
-    public void getHiredCandidate(String filePath) throws IOException {
+    public void getHiredCandidate(MultipartFile filePath) throws IOException {
         boolean flag = true;
-        List sheetData = new ArrayList();
-        HiredCandidate hiredCandidate = new HiredCandidate();
-        try (FileInputStream fis = new FileInputStream(filePath)) {
+        HiredCandidateDto hiredCandidateDto = new HiredCandidateDto();
+        try (InputStream fis = filePath.getInputStream()) {
             //Create Workbook instance holding reference to .xlsx file
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             //Get first/desired sheet from the workbook
@@ -43,45 +43,45 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
             while (rows.hasNext()) {
                 XSSFRow row = (XSSFRow) rows.next();
                 Iterator cells = row.cellIterator();
-                if (flag == false) {
+                if (!flag) {
                     while (cells.hasNext()) {
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setId((long) cell.getNumericCellValue());
+                        hiredCandidateDto.setId((long) cell.getNumericCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setFirst_name(cell.getStringCellValue());
+                        hiredCandidateDto.setFirstName(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setMiddle_name(cell.getStringCellValue());
+                        hiredCandidateDto.setMiddleName(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setLast_name(cell.getStringCellValue());
+                        hiredCandidateDto.setLastName(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setEmail(cell.getStringCellValue());
+                        hiredCandidateDto.setEmail(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setHired_city(cell.getStringCellValue());
+                        hiredCandidateDto.setHiredCity(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setDegree(cell.getStringCellValue());
+                        hiredCandidateDto.setDegree(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setHired_date(cell.getDateCellValue());
+                        hiredCandidateDto.setHiredDate(cell.getDateCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setMobile_number((long) cell.getNumericCellValue());
+                        hiredCandidateDto.setMobileNumber((long) cell.getNumericCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setPermanent_pincode((long) cell.getNumericCellValue());
+                        hiredCandidateDto.setPermanentPincode((long) cell.getNumericCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setHired_lab(cell.getStringCellValue());
+                        hiredCandidateDto.setHiredLab(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setAttitude(cell.getStringCellValue());
+                        hiredCandidateDto.setAttitude(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setCommunication_remark(cell.getStringCellValue());
+                        hiredCandidateDto.setCommunicationRemark(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setKnowledge_remark(cell.getStringCellValue());
+                        hiredCandidateDto.setKnowledgeRemark(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setAggregate_remark(cell.getStringCellValue());
+                        hiredCandidateDto.setAggregateRemark(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setStatus(cell.getStringCellValue());
+                        hiredCandidateDto.setStatus(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setCreator_stamp(cell.getDateCellValue());
+                        hiredCandidateDto.setCreatorStamp(cell.getDateCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidate.setCreator_user(cell.getStringCellValue());
-                        save(hiredCandidate);
+                        hiredCandidateDto.setCreatorUser(cell.getStringCellValue());
+                        save(hiredCandidateDto);
                     }
                 }
                 flag = false;
@@ -92,8 +92,8 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
     }
 
     @Override
-    public void save(HiredCandidate hiredCandidate) {
-        HiredCandidateModel hiredCandidateModel = modelMapper.map(hiredCandidate, HiredCandidateModel.class);
+    public void save(HiredCandidateDto hiredCandidateDto) {
+        HiredCandidateModel hiredCandidateModel = modelMapper.map(hiredCandidateDto, HiredCandidateModel.class);
         hiredCandidateRepository.save(hiredCandidateModel);
     }
 
@@ -104,7 +104,7 @@ public class HiredCandidateServiceImpl implements HiredCandidateService {
 
     @Override
     public HiredCandidateModel findByFirst_name(String name) {
-        HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findByFirst_name(name);
+        HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findByFirstName(name);
         return hiredCandidateModel;
     }
 }

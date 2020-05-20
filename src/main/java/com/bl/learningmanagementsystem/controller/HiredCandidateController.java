@@ -1,33 +1,34 @@
 package com.bl.learningmanagementsystem.controller;
 
-import com.bl.learningmanagementsystem.responsedto.Response;
+import com.bl.learningmanagementsystem.response.ResponseDto;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
-import com.bl.learningmanagementsystem.service.HiredCandidateServiceImpl;
+import com.bl.learningmanagementsystem.service.IHiredCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/hireCandidate")
+@RequestMapping("/hirecandidates")
 public class HiredCandidateController {
 
     @Autowired
-    private HiredCandidateServiceImpl hiredCandidateService;
+    private IHiredCandidateService hiredCandidateService;
 
-    @PostMapping("/importHiredCandidate")
-    public Response importHiredCandidate(@RequestParam(value = "path") String filename) throws IOException {
-        hiredCandidateService.getHiredCandidate(filename);
-        return new Response(200, "Successfully imported");
+    @PostMapping("/importhiredcandidate")
+    public ResponseDto importHiredCandidate(@RequestParam("file") MultipartFile file) throws IOException {
+        hiredCandidateService.getHiredCandidate(file);
+        return new ResponseDto(200, "Successfully imported");
     }
 
-    @GetMapping("/hiredCandidateList")
+    @GetMapping("/hiredcandidatelist")
     public List getHiredCandidate() throws IOException {
         return hiredCandidateService.getHiredCandidates();
     }
 
-    @GetMapping("/viewCandidateProfile")
+    @GetMapping("/viewcandidateprofile")
     public HiredCandidateModel viewCandidateProfile(@RequestParam(value = "firstName") String firstName) throws IOException {
         return hiredCandidateService.findByFirst_name(firstName);
     }
