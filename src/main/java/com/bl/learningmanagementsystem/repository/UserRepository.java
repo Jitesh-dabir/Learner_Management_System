@@ -5,12 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("select u from user_details u where u.firstName = ?1")
-    public User findByFirstName(String firstName);
+    Optional<User> findByFirstName(String firstName);
 
-    @Query("select u from user_details u where u.email = ?1")
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findById(long id);
 }
