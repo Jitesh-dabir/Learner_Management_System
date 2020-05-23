@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.bl.learningmanagementsystem.dto.JwtRequestDto;
+import com.bl.learningmanagementsystem.dto.LoginDto;
 import com.bl.learningmanagementsystem.dto.UserDto;
-import com.bl.learningmanagementsystem.response.ResponseDto;
+import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.repository.UserRepository;
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
 import org.modelmapper.ModelMapper;
@@ -54,47 +55,53 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByFirstName(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
+        User user = userRepository.findByFirstName(username).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
+                .USER_NOT_FOUND, "User not found with username"));
         return new org.springframework.security.core.userdetails.User(user.getFirstName(), user.getPassword(),
                 new ArrayList<>());
     }
 
     @Override
-    public ResponseDto save(UserDto user) {
+    public long loginUser(LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.email).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
+                .INVALID_EMAIL_ID, "User not found with email"));
+        if (!bcryptEncoder.matches(loginDto.password, user.getPassword()))
+            throw new LmsAppServiceException(LmsAppServiceException.exceptionType.INVALID_PASSWORD, "Invalid password");
+        return user.getId();
+    }
+
+    @Override
+    public User save(UserDto user) {
         user.setCreatorStamp(LocalDateTime.now());
         user.setCreatorUser(user.getFirstName());
         user.setVerified("yes");
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
         User newUser = modelMapper.map(user, User.class);
-        userRepository.save(newUser);
-        return new ResponseDto(200, "Register successfull");
+        return userRepository.save(newUser);
     }
 
     @Override
-    public boolean resetPassword(String password, String token) {
+    public User resetPassword(String password, String token) {
 
         String encodedPassword = bcryptEncoder.encode(password);
         if (jwtTokenUtil.isTokenExpired(token)) {
-            return false;
+            throw new LmsAppServiceException(LmsAppServiceException.exceptionType.INVALID_TOKEN, "Token expired");
         }
-        long id = Long.parseLong(jwtTokenUtil.getSubjectFromToken(token));
-
-        User user = entityManager.find(User.class, id);
-        user.setPassword(encodedPassword);
-        User updatedUser = userRepository.save(user);
-        if (updatedUser != null && updatedUser.getPassword().equalsIgnoreCase(encodedPassword))
-            return true;
-        return false;
+        long id = Long.valueOf(jwtTokenUtil.getSubjectFromToken(token));
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setPassword(encodedPassword);
+                    return user;
+                })
+                .map(userRepository::save).get();
     }
 
     @Override
-    public String getResetPasswordToken(String email) throws MessagingException {
-        User user = userRepository.findByEmail(email);
+    public String getResetPasswordToken(String email) throws MessagingException, LmsAppServiceException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
+                .INVALID_EMAIL_ID, "User not found with email"));
         final String token = jwtTokenUtil.generatePasswordResetToken(String.valueOf(user.getId()));
-        //emailService.sentEmail(user, token);
+        emailService.sentEmail(user, token);
         return token;
     }
 
