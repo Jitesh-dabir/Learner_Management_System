@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IHiredCandidateService {
-    void getHiredCandidate(MultipartFile filePath) throws IOException;
+    boolean getHiredCandidate(MultipartFile filePath) throws IOException;
 
     void save(HiredCandidateDto hiredCandidateDto);
 
     List getHiredCandidates();
 
-    HiredCandidateModel findByFirst_name(String name);
+    HiredCandidateModel findById(long candidateId);
 }

@@ -1,6 +1,7 @@
 package com.bl.learningmanagementsystem.service;
 
 import com.bl.learningmanagementsystem.dto.HiredCandidateDto;
+import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -28,7 +29,7 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
 
     //Method to read excel file and store data to database
     @Override
-    public void getHiredCandidate(MultipartFile filePath) throws IOException {
+    public boolean getHiredCandidate(MultipartFile filePath) throws IOException {
         boolean flag = true;
         HiredCandidateDto hiredCandidateDto = new HiredCandidateDto();
         try (InputStream fis = filePath.getInputStream()) {
@@ -89,22 +90,30 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     @Override
     public void save(HiredCandidateDto hiredCandidateDto) {
         HiredCandidateModel hiredCandidateModel = modelMapper.map(hiredCandidateDto, HiredCandidateModel.class);
+        if (hiredCandidateModel.equals(null))
+            throw new LmsAppServiceException(LmsAppServiceException.exceptionType
+                    .DATA_NOT_FOUND, "Null Values found");
         hiredCandidateRepository.save(hiredCandidateModel);
     }
 
     @Override
     public List getHiredCandidates() {
-        return hiredCandidateRepository.findAll();
+        List<HiredCandidateModel> list = hiredCandidateRepository.findAll();
+        if (list.equals(null))
+            throw new LmsAppServiceException(LmsAppServiceException.exceptionType.DATA_NOT_FOUND, "Null Values found");
+        return list;
     }
 
     @Override
-    public HiredCandidateModel findByFirst_name(String name) {
-        HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findByFirstName(name);
-        return hiredCandidateModel;
+    public HiredCandidateModel findById(long userId) {
+        return hiredCandidateRepository.findById(userId)
+                .orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
+                        .INVALID_ID, "User not found with this id"));
     }
 }
