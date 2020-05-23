@@ -2,28 +2,11 @@ package com.bl.learningmanagementsystem.response;
 
 public class ResponseDto {
 
-    int status;
-    String message;
+    public Object data;
+    public String message;
 
-    public ResponseDto(int status, String message) {
-        this.status = status;
-        this.message = message;
-    }
-
-    //Getter and Setter
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
+    public ResponseDto(Object data, String message) {
+        this.data = data;
         this.message = message;
     }
 }
