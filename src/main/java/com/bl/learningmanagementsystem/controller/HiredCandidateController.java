@@ -1,9 +1,12 @@
 package com.bl.learningmanagementsystem.controller;
 
+import com.bl.learningmanagementsystem.configuration.ApplicationConfiguration;
 import com.bl.learningmanagementsystem.response.ResponseDto;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.service.IHiredCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,18 +21,20 @@ public class HiredCandidateController {
     private IHiredCandidateService hiredCandidateService;
 
     @PostMapping("/importhiredcandidate")
-    public ResponseDto importHiredCandidate(@RequestParam("file") MultipartFile file) throws IOException {
-        hiredCandidateService.getHiredCandidate(file);
-        return new ResponseDto(200, "Successfully imported");
+    public ResponseEntity<ResponseDto> importHiredCandidate(@RequestParam("file") MultipartFile file) throws IOException {
+        boolean isImported = hiredCandidateService.getHiredCandidate(file);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(isImported, ApplicationConfiguration.getMessageAccessor().getMessage("109")), HttpStatus.CREATED);
     }
 
     @GetMapping("/hiredcandidatelist")
-    public List getHiredCandidate() throws IOException {
-        return hiredCandidateService.getHiredCandidates();
+    public ResponseEntity<List> getHiredCandidate() throws IOException {
+        List list = hiredCandidateService.getHiredCandidates();
+        return new ResponseEntity<List>(list, HttpStatus.MULTI_STATUS);
     }
 
     @GetMapping("/viewcandidateprofile")
-    public HiredCandidateModel viewCandidateProfile(@RequestParam(value = "firstName") String firstName) throws IOException {
-        return hiredCandidateService.findByFirst_name(firstName);
+    public ResponseEntity<ResponseDto> viewCandidateProfile(@RequestParam(value = "id") long candidateId) throws IOException {
+        HiredCandidateModel hiredCandidateModel = hiredCandidateService.findById(candidateId);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(hiredCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("105")), HttpStatus.OK);
     }
 }
