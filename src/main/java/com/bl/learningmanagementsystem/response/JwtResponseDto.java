@@ -1,17 +1,12 @@
 package com.bl.learningmanagementsystem.response;
 
-import java.io.Serializable;
+public class JwtResponseDto {
 
-public class JwtResponseDto implements Serializable {
+    public String jwttoken;
+    public String message;
 
-    private static final long serialVersionUID = -8091879091924046844L;
-    private final String jwttoken;
-
-    public JwtResponseDto(String jwttoken) {
-        this.jwttoken = jwttoken;
-    }
-
-    public String getToken() {
-        return this.jwttoken;
+    public JwtResponseDto(String token, String message) {
+        this.jwttoken = token;
+        this.message = message;
     }
 }
