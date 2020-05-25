@@ -11,6 +11,8 @@ import com.bl.learningmanagementsystem.repository.UserRepository;
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import com.bl.learningmanagementsystem.model.User;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 
 @Service
@@ -42,16 +45,13 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private EntityManager entityManager;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private EmailService emailService;
+    private JavaMailSender sender;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -101,7 +101,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         User user = userRepository.findByEmail(email).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
                 .INVALID_EMAIL_ID, "User not found with email"));
         final String token = jwtTokenUtil.generatePasswordResetToken(String.valueOf(user.getId()));
-        emailService.sentEmail(user, token);
+        sentEmail(user, token);
         return token;
     }
 
@@ -123,5 +123,17 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+    }
+
+    //Method to send email
+    public void sentEmail(User user, String token) throws MessagingException {
+        String recipientAddress = user.getEmail();
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setTo(recipientAddress);
+        helper.setText("Hii " + user.getFirstName() + "\n" + " You requested to reset password, if YES then click on link put your new password and NO then ignore \n" +
+                "http://localhost:8084/reset_password?json={%22password%22:%22" + null + "%22+,%22token%22:" + token + "}");
+        helper.setSubject("Password-Reset-Request");
+        sender.send(message);
     }
 }
