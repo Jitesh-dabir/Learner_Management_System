@@ -3,7 +3,6 @@ package com.bl.learningmanagementsystem.service;
 import com.bl.learningmanagementsystem.dto.HiredCandidateDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
-import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -17,14 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
 
 @Service
 public class HiredCandidateServiceImpl implements IHiredCandidateService {
@@ -67,7 +63,6 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
                         hiredCandidateDto.setLastName(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
                         hiredCandidateDto.setEmail(cell.getStringCellValue());
-
                         cell = (XSSFCell) cells.next();
                         hiredCandidateDto.setHiredCity(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
@@ -136,10 +131,11 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
                 .map(hiredCandidateModel -> {
                     hiredCandidateModel.setStatus(status);
                     return hiredCandidateRepository.save(hiredCandidateModel);
-                }).orElseThrow(()-> new LmsAppServiceException(LmsAppServiceException.exceptionType.DATA_NOT_FOUND,"Data not found"));
+                }).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType.DATA_NOT_FOUND, "Data not found"));
     }
 
     //Method to send email
+    @Override
     public void sentEmail(HiredCandidateDto hiredCandidateDto) throws MessagingException {
         String recipientAddress = hiredCandidateDto.getEmail();
         MimeMessage message = sender.createMimeMessage();
