@@ -12,4 +12,6 @@ public interface HiredCandidateRepository extends JpaRepository<HiredCandidateMo
     List<HiredCandidateModel> findAll();
 
     Optional<HiredCandidateModel> findById(long candidateId);
+
+    Optional<HiredCandidateModel> findByEmail(String email);
 }
