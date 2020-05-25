@@ -37,4 +37,10 @@ public class HiredCandidateController {
         HiredCandidateModel hiredCandidateModel = hiredCandidateService.findById(candidateId);
         return new ResponseEntity<ResponseDto>(new ResponseDto(hiredCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("105")), HttpStatus.OK);
     }
+
+    @PutMapping("/changestatus")
+    public ResponseEntity<ResponseDto> setCandidateStatus(@RequestParam(value = "email") String email, @RequestParam(value = "status") String status) {
+        HiredCandidateModel hiredCandidateModel = hiredCandidateService.setStatusResponse(email, status);
+        return new ResponseEntity<>(new ResponseDto(hiredCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("110")), HttpStatus.OK);
+    }
 }
