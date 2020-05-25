@@ -3,6 +3,7 @@ package com.bl.learningmanagementsystem.service;
 import com.bl.learningmanagementsystem.dto.HiredCandidateDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
+import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -10,13 +11,20 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
 @Service
 public class HiredCandidateServiceImpl implements IHiredCandidateService {
@@ -26,6 +34,9 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private JavaMailSender sender;
 
     //Method to read excel file and store data to database
     @Override
@@ -56,6 +67,7 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
                         hiredCandidateDto.setLastName(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
                         hiredCandidateDto.setEmail(cell.getStringCellValue());
+
                         cell = (XSSFCell) cells.next();
                         hiredCandidateDto.setHiredCity(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
@@ -83,11 +95,12 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
                         cell = (XSSFCell) cells.next();
                         hiredCandidateDto.setCreatorUser(cell.getStringCellValue());
                         save(hiredCandidateDto);
+                        sentEmail(hiredCandidateDto);
                     }
                 }
                 flag = false;
             }
-        } catch (IOException e) {
+        } catch (IOException | MessagingException e) {
             e.printStackTrace();
         }
         return true;
@@ -115,5 +128,28 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
         return hiredCandidateRepository.findById(userId)
                 .orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
                         .INVALID_ID, "User not found with this id"));
+    }
+
+    @Override
+    public HiredCandidateModel setStatusResponse(String email, String status) {
+        return hiredCandidateRepository.findByEmail(email)
+                .map(hiredCandidateModel -> {
+                    hiredCandidateModel.setStatus(status);
+                    return hiredCandidateRepository.save(hiredCandidateModel);
+                }).orElseThrow(()-> new LmsAppServiceException(LmsAppServiceException.exceptionType.DATA_NOT_FOUND,"Data not found"));
+    }
+
+    //Method to send email
+    public void sentEmail(HiredCandidateDto hiredCandidateDto) throws MessagingException {
+        String recipientAddress = hiredCandidateDto.getEmail();
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setTo(recipientAddress);
+        String accept = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=accept";
+        String reject = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=reject";
+        helper.setText("Hii " + hiredCandidateDto.getFirstName() + "\n" + "You are selected for BridgeLabz fellowship program," +
+                " if You want to join click on below link (ACCEPT) \n" + accept + "\n otherwise (REJECT)\n" + reject);
+        helper.setSubject("Invitation to join BridgeLabz Fellowship Program");
+        sender.send(message);
     }
 }

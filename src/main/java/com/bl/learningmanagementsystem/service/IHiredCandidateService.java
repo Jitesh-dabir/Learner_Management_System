@@ -15,4 +15,6 @@ public interface IHiredCandidateService {
     List getHiredCandidates();
 
     HiredCandidateModel findById(long candidateId);
+
+    HiredCandidateModel setStatusResponse(String email, String status);
 }
