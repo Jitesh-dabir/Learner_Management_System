@@ -62,4 +62,10 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
         helper.setSubject("Job offer notification");
         //sender.send(message);
     }
+
+    @Override
+    public int getCandidatesCount() {
+        List<FellowshipCandidateModel> list = fellowshipCandidateRepository.findAll();
+        return list.size();
+    }
 }

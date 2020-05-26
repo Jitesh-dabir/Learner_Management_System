@@ -11,5 +11,7 @@ public interface IFellowshipCandidateService {
     FellowshipCandidateModel joinCandidate(long id) throws MessagingException;
 
     void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException;
+
+    int getCandidatesCount();
 }
 
