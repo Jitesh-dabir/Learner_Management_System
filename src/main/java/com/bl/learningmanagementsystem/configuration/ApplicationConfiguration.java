@@ -20,23 +20,14 @@ import java.util.Locale;
 @EnableSwagger2
 public class ApplicationConfiguration {
 
+    private static MessageSourceAccessor messageSourceAccessor;
+
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setAmbiguityIgnored(true);
         return mapper;
     }
-
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    private static MessageSourceAccessor messageSourceAccessor;
 
     @PostConstruct
     private static void initMessageSourceAccessor() {
