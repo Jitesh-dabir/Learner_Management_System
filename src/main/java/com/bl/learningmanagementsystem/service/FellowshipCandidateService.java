@@ -1,10 +1,13 @@
 package com.bl.learningmanagementsystem.service;
 
+import com.bl.learningmanagementsystem.dto.FellowshipCandidateDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.FellowshipCandidateModel;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.FellowshipCandidateRepository;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 
 @Service
 public class FellowshipCandidateService implements IFellowshipCandidateService {
@@ -30,7 +34,7 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
     private JavaMailSender sender;
 
     @Override
-    public FellowshipCandidateModel joinCandidate(long id) throws MessagingException {
+    public FellowshipCandidateModel joinCandidate(long id) {
         HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findById(id)
                 .orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
                         .INVALID_ID, "User not found with this id"));
@@ -56,6 +60,6 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
                 " if you have any questions.\n" +
                 "\n We are all looking forward to having you on our team. ");
         helper.setSubject("Job offer notification");
-        sender.send(message);
+        //sender.send(message);
     }
 }

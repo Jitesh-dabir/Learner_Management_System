@@ -1,7 +1,9 @@
 package com.bl.learningmanagementsystem.service;
 
 
+import com.bl.learningmanagementsystem.dto.FellowshipCandidateDto;
 import com.bl.learningmanagementsystem.model.FellowshipCandidateModel;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import javax.mail.MessagingException;
 
