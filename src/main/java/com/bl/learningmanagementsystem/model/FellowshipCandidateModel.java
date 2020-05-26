@@ -1,13 +1,17 @@
 package com.bl.learningmanagementsystem.model;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "fellowship_candidate")
 @Entity(name = "fellowship_candidate")
 public class FellowshipCandidateModel {
@@ -31,16 +35,16 @@ public class FellowshipCandidateModel {
     private String status;
     private Date creatorStamp;
     private String creatorUser;
-    private Date birth_date;
-    private String is_birth_date_verified;
-    private String parent_occupation;
-    private long parent_mobile_number;
-    private double parent_annual_salary;
-    private String local_address;
-    private String permanent_address;
-    private String photo_path;
-    private Date joining_date;
-    private String candidate_status;
-    private String document_status;
+    private Date birthDate;
+    private String isBirthDateVerified;
+    private String parentOccupation;
+    private long parentMobileNumber;
+    private double parentAnnualSalary;
+    private String localAddress;
+    private String permanentAddress;
+    private String photoPath;
+    private Date joiningDate;
+    private String candidateStatus;
+    private String documentStatus;
     private String remark;
 }
