@@ -68,4 +68,15 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
         List<FellowshipCandidateModel> list = fellowshipCandidateRepository.findAll();
         return list.size();
     }
+
+
+    @Override
+    public FellowshipCandidateModel updateInformation(FellowshipCandidateDto fellowshipCandidateDto) throws JsonMappingException {
+        HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findById(3)
+                .orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
+                        .INVALID_ID, "User not found with this id"));
+        modelMapper.map(hiredCandidateModel,fellowshipCandidateDto);
+        FellowshipCandidateModel fellowshipMappedCandidate = modelMapper.map(fellowshipCandidateDto, FellowshipCandidateModel.class);
+        return fellowshipCandidateRepository.save(fellowshipMappedCandidate);
+    }
 }
