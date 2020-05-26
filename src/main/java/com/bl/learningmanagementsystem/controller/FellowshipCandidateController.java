@@ -26,4 +26,10 @@ public class FellowshipCandidateController {
         fellowshipCandidateService.sentEmail(fellowshipCandidateModel);
         return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
     }
+
+    @GetMapping("/getcandidatecount")
+    public ResponseEntity<ResponseDto> getCandidatesCount() {
+        int candidateCount = fellowshipCandidateService.getCandidatesCount();
+        return new ResponseEntity<>(new ResponseDto(candidateCount, ApplicationConfiguration.getMessageAccessor().getMessage("112")), HttpStatus.OK);
+    }
 }
