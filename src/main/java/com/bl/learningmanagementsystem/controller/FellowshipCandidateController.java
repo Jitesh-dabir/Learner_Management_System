@@ -32,4 +32,10 @@ public class FellowshipCandidateController {
         int candidateCount = fellowshipCandidateService.getCandidatesCount();
         return new ResponseEntity<>(new ResponseDto(candidateCount, ApplicationConfiguration.getMessageAccessor().getMessage("112")), HttpStatus.OK);
     }
+
+    @PutMapping("/updateinformation")
+    public ResponseEntity<ResponseDto> updatePersoalInformation(@RequestBody FellowshipCandidateDto fellowshipCandidateDto) throws JsonMappingException {
+        FellowshipCandidateModel fellowshipCandidateModel = fellowshipCandidateService.updateInformation(fellowshipCandidateDto);
+        return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
+    }
 }
