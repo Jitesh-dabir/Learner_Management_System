@@ -57,8 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/hirecandidates/changestatus", "/users/authenticate", "/users/register",
                 "/users/resetpassword", "/users/requestresetpassword", "/hirecandidates/importhiredcandidate",
                 "/hirecandidates/hiredcandidatelist", "/hirecandidates/viewcandidateprofile",
-                "/fellowshipcandidates/jointhecandidate", "/fellowshipcandidates/updateinformation", "/swagger-resources/**"
-                , "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/fellowshipcandidates/getcandidatecount")
+                "/fellowshipcandidates/jointhecandidate", "/fellowshipcandidates/updateinformation", "/swagger-resources/**",
+                "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/fellowshipcandidates/getcandidatecount",
+                "/bankdetails/updatebankdetails")
                 .permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
