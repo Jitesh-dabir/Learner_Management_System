@@ -64,14 +64,14 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
     }
 
     @Override
-    public int getCandidatesCount() {
+    public int CandidatesCount() {
         List<FellowshipCandidateModel> list = fellowshipCandidateRepository.findAll();
         return list.size();
     }
 
 
     @Override
-    public FellowshipCandidateModel updateInformation(FellowshipCandidateDto fellowshipCandidateDto) throws JsonMappingException {
+    public FellowshipCandidateModel updateInformation(FellowshipCandidateDto fellowshipCandidateDto) {
         HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findById(3)
                 .orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
                         .INVALID_ID, "User not found with this id"));

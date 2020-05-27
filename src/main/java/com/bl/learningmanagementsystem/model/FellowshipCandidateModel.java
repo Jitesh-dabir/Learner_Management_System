@@ -3,18 +3,19 @@ package com.bl.learningmanagementsystem.model;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "fellowship_candidate")
 @Entity(name = "fellowship_candidate")
-public class FellowshipCandidateModel {
+public class FellowshipCandidateModel implements Serializable {
+
     @Id
     private long id;
     private String firstName;
@@ -47,4 +48,6 @@ public class FellowshipCandidateModel {
     private String candidateStatus;
     private String documentStatus;
     private String remark;
+//    @OneToMany(mappedBy="fellowshipCandidate")
+//    private List<BankDetailsModel> bankDetailsModel;
 }

@@ -12,7 +12,7 @@ public interface IFellowshipCandidateService {
 
     void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException;
 
-    int getCandidatesCount();
+    int CandidatesCount();
 
     FellowshipCandidateModel updateInformation(FellowshipCandidateDto fellowshipCandidateDto) throws JsonMappingException;
 }

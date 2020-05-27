@@ -28,8 +28,8 @@ public class FellowshipCandidateController {
     }
 
     @GetMapping("/getcandidatecount")
-    public ResponseEntity<ResponseDto> getCandidatesCount() {
-        int candidateCount = fellowshipCandidateService.getCandidatesCount();
+    public ResponseEntity<ResponseDto> CandidatesCount() {
+        int candidateCount = fellowshipCandidateService.CandidatesCount();
         return new ResponseEntity<>(new ResponseDto(candidateCount, ApplicationConfiguration.getMessageAccessor().getMessage("112")), HttpStatus.OK);
     }
 
