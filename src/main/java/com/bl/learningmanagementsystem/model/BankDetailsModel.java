@@ -35,8 +35,4 @@ public class BankDetailsModel implements Serializable {
     private String isAddhaarNumVerified;
     private Date creatorStamp;
     private String creatorUser;
-    //@ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumns({
-//            @JoinColumn(name="candidateId", referencedColumnName="id")})
-    //private FellowshipCandidateModel fellowshipCandidateModel;
 }
