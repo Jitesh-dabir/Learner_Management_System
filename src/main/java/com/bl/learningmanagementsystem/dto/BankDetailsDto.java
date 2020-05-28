@@ -19,14 +19,23 @@ public class BankDetailsDto {
     private long id;
     @NotBlank(message = "Candidate id is mandatory")
     private long candidateId;
+    @NotNull
     private String name;
+    @NotNull
     private long accountNumber;
+    @NotNull
     private String isAccountNumberVerified;
+    @NotNull
     private String ifsc_code;
+    @NotNull
     private String isIfscCodeVerified;
+    @NotNull
     private String panNumber;
+    @NotNull
     private String isPanNumberVerified;
+    @NotNull
     private long addhaarNumber;
+    @NotNull
     private String isAddhaarNumVerified;
     private Date creatorStamp;
     private String creatorUser;

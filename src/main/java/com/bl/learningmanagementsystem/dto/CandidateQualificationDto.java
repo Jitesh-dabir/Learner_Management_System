@@ -17,15 +17,22 @@ public class CandidateQualificationDto {
 
     @NotNull
     private long id;
+    @NotNull
     private long candidateId;
+    @NotNull
     private String diploma;
+    @NotNull
     private String degreeName;
     private String isDegreeNameVerified;
+    @NotNull
     private String employeeDescipline;
     private String isEmployeeDisciplinedVerified;
+    @NotNull
     private long passingYear;
     private String isPassingYearVerified;
+    @NotNull
     private double aggregatePercentage;
+    @NotNull
     private double finalYearPercentage;
     private String isFinalYearPercentageVerified;
     private String trainingInstitute;

@@ -26,7 +26,7 @@ public class CandidateQualificationController {
 
     @PostMapping("/updatequalificationdetails")
     public ResponseEntity<ResponseDto> updateQualificationDetails(@Valid @RequestBody CandidateQualificationDto candidateQualificationDto) {
-        CandidateQualificationModel updatedetails = iCandidateQualificationService.updateDetails(candidateQualificationDto);
-        return new ResponseEntity<>(new ResponseDto(updatedetails, ApplicationConfiguration.getMessageAccessor().getMessage("110")), HttpStatus.OK);
+        CandidateQualificationModel updateDetails = iCandidateQualificationService.updateDetails(candidateQualificationDto);
+        return new ResponseEntity<>(new ResponseDto(updateDetails, ApplicationConfiguration.getMessageAccessor().getMessage("110")), HttpStatus.OK);
     }
 }

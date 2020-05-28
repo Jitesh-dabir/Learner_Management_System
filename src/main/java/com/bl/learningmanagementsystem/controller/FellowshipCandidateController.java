@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/fellowshipcandidates")
@@ -27,14 +28,14 @@ public class FellowshipCandidateController {
         return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
     }
 
-    @GetMapping("/getcandidatecount")
-    public ResponseEntity<ResponseDto> CandidatesCount() {
+    @GetMapping("/candidatecount")
+    public ResponseEntity<ResponseDto> candidatesCount() {
         int candidateCount = fellowshipCandidateService.CandidatesCount();
         return new ResponseEntity<>(new ResponseDto(candidateCount, ApplicationConfiguration.getMessageAccessor().getMessage("112")), HttpStatus.OK);
     }
 
     @PutMapping("/updateinformation")
-    public ResponseEntity<ResponseDto> updatePersoalInformation(@RequestBody FellowshipCandidateDto fellowshipCandidateDto) throws JsonMappingException {
+    public ResponseEntity<ResponseDto> updatePersonalInformation(@Valid  @RequestBody FellowshipCandidateDto fellowshipCandidateDto) throws JsonMappingException {
         FellowshipCandidateModel fellowshipCandidateModel = fellowshipCandidateService.updateInformation(fellowshipCandidateDto);
         return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
     }

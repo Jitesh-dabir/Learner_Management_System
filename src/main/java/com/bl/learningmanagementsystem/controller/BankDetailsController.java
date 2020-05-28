@@ -22,8 +22,8 @@ public class BankDetailsController {
     private IBankDetailsService iBankDetailsService;
 
     @PostMapping("/updatebankdetails")
-    public ResponseEntity<ResponseDto> updatebankdetails(@Valid @RequestBody BankDetailsDto bankDetailsDto) {
-        BankDetailsModel updatedetails = iBankDetailsService.updatedetails(bankDetailsDto);
-        return new ResponseEntity<>(new ResponseDto(updatedetails, ApplicationConfiguration.getMessageAccessor().getMessage("110")), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> updateBankDetails(@Valid @RequestBody BankDetailsDto bankDetailsDto) {
+        BankDetailsModel updateDetails = iBankDetailsService.updatedetails(bankDetailsDto);
+        return new ResponseEntity<>(new ResponseDto(updateDetails, ApplicationConfiguration.getMessageAccessor().getMessage("110")), HttpStatus.OK);
     }
 }
