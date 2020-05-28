@@ -24,6 +24,7 @@ public class BankDetailsServiceImpl implements IBankDetailsService {
     @Autowired
     private ModelMapper modelMapper;
 
+    //Method to update candidate bank details to database.
     @Override
     public BankDetailsModel updatedetails(BankDetailsDto bankDetailsDto) {
         fellowshipCandidateRepository.findById(bankDetailsDto.getCandidateId())

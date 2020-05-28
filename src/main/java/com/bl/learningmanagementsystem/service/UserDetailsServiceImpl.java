@@ -53,6 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
     @Autowired
     private JavaMailSender sender;
 
+    //Method to load user by its username from database.
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByFirstName(username).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
@@ -61,6 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
                 new ArrayList<>());
     }
 
+    //Method to valid user details and allow for lofin
     @Override
     public long loginUser(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.email).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
@@ -70,6 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         return user.getId();
     }
 
+    //Method to register user and save to database
     @Override
     public User save(UserDto user) {
         user.setCreatorStamp(LocalDateTime.now());
@@ -80,9 +83,9 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         return userRepository.save(newUser);
     }
 
+    //Method to reset password.
     @Override
     public User resetPassword(String password, String token) {
-
         String encodedPassword = bcryptEncoder.encode(password);
         if (jwtTokenUtil.isTokenExpired(token)) {
             throw new LmsAppServiceException(LmsAppServiceException.exceptionType.INVALID_TOKEN, "Token expired");
@@ -96,6 +99,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
                 .map(userRepository::save).get();
     }
 
+    //Method to get password reset token.
     @Override
     public String getResetPasswordToken(String email) throws MessagingException, LmsAppServiceException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
@@ -105,6 +109,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         return token;
     }
 
+    //Method to get authentication token
     @Override
     public String getAuthenticationToken(JwtRequestDto authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -114,7 +119,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         return token;
     }
 
-
+    //Method to authenticate user.
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -125,7 +130,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         }
     }
 
-    //Method to send email
+    //Method to send reset password request email.
     public void sentEmail(User user, String token) throws MessagingException {
         String recipientAddress = user.getEmail();
         MimeMessage message = sender.createMimeMessage();

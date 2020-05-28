@@ -15,7 +15,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender sender;
 
-    //Method to send email
+    //Method to send email.
     public void sentEmail(User user, String token) throws MessagingException {
         String recipientAddress = user.getEmail();
         MimeMessage message = sender.createMimeMessage();

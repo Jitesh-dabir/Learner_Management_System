@@ -24,6 +24,7 @@ public class CandidateQualificationServiceImpl implements ICandidateQualificatio
     @Autowired
     private CandidateQualificationRepository candidateQualificationRepository;
 
+    //Method to update candidate qualification details
     @Override
     public CandidateQualificationModel updateDetails(CandidateQualificationDto candidateQualificationDto) {
         fellowshipCandidateRepository.findById(candidateQualificationDto.getCandidateId())

@@ -33,6 +33,7 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
     @Autowired
     private JavaMailSender sender;
 
+    //Method to join candidate to company.
     @Override
     public FellowshipCandidateModel joinCandidate(long id) {
         HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findById(id)
@@ -45,7 +46,7 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
         return fellowshipCandidateRepository.save(fellowshipCandidateModel);
     }
 
-    //Method to send email
+    //Method to send job offer email to candidate.
     @Override
     public void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException {
         String recipientAddress = fellowshipCandidateModel.getEmail();
@@ -63,13 +64,14 @@ public class FellowshipCandidateService implements IFellowshipCandidateService {
         //sender.send(message);
     }
 
+    //Method to get total candidate count.
     @Override
     public int CandidatesCount() {
         List<FellowshipCandidateModel> list = fellowshipCandidateRepository.findAll();
         return list.size();
     }
 
-
+    //Method to update candidate personal information.
     @Override
     public FellowshipCandidateModel updateInformation(FellowshipCandidateDto fellowshipCandidateDto) {
         HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findById(3)
