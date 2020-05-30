@@ -23,7 +23,8 @@ public class HiredCandidateController {
     @PostMapping("/importhiredcandidate")
     public ResponseEntity<ResponseDto> importHiredCandidate(@RequestParam("file") MultipartFile file) throws IOException {
         boolean isImported = hiredCandidateService.getHiredCandidate(file);
-        return new ResponseEntity<ResponseDto>(new ResponseDto(isImported, ApplicationConfiguration.getMessageAccessor().getMessage("109")), HttpStatus.CREATED);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(isImported, ApplicationConfiguration.getMessageAccessor()
+                .getMessage("109")), HttpStatus.CREATED);
     }
 
     @GetMapping("/hiredcandidatelist")
