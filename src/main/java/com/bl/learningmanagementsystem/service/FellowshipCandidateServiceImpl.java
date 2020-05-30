@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 @Service
-public class FellowshipCandidateService implements IFellowshipCandidateService {
+public class FellowshipCandidateServiceImpl implements IFellowshipCandidateService {
 
     @Autowired
     private FellowshipCandidateRepository fellowshipCandidateRepository;
