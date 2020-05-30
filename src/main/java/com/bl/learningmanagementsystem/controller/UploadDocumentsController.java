@@ -19,18 +19,12 @@ public class UploadDocumentsController {
     @Autowired
     private IUploadFileService iUploadFileService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @PostMapping("/doupload")
     public ResponseEntity<ResponseDto> handleFileUpload(@RequestParam("userDetails") String uploadDocumentsDto,
                                                         @RequestParam("aadhaarCard") MultipartFile aadhaarCard,
                                                         @RequestParam("panCard") MultipartFile panCard) throws Exception {
-        UploadDocumentsDto uploadDocumentsDto1 = objectMapper.readValue(uploadDocumentsDto, UploadDocumentsDto.class);
-        uploadDocumentsDto1.setAadhaarCard(aadhaarCard.getBytes());
-        uploadDocumentsDto1.setPanCard(panCard.getBytes());
-        UploadDocumentsModel uploadDocumentsModel = iUploadFileService.doUpload(uploadDocumentsDto1);
-        return new ResponseEntity<ResponseDto>(new ResponseDto(uploadDocumentsModel,200, ApplicationConfiguration.getMessageAccessor()
+        UploadDocumentsModel uploadDocumentsModel = iUploadFileService.doUpload(uploadDocumentsDto, aadhaarCard, panCard);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(uploadDocumentsModel, 200, ApplicationConfiguration.getMessageAccessor()
                 .getMessage("110")), HttpStatus.CREATED);
     }
 }

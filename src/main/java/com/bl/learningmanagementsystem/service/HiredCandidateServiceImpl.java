@@ -141,8 +141,8 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setTo(recipientAddress);
-        String accept = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=accept";
-        String reject = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=reject";
+        String accept = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Accept";
+        String reject = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Reject";
         helper.setText("Hii " + hiredCandidateDto.getFirstName() + "\n" + "You are selected for BridgeLabz fellowship program," +
                 " if You want to join click on below link (ACCEPT) \n" + accept + "\n otherwise (REJECT)\n" + reject);
         helper.setSubject("Invitation to join BridgeLabz Fellowship Program");
