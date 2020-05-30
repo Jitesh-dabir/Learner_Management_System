@@ -74,7 +74,7 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
     //Method to update candidate personal information.
     @Override
     public FellowshipCandidateModel updateInformation(FellowshipCandidateDto fellowshipCandidateDto) {
-        HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findById(3)
+        HiredCandidateModel hiredCandidateModel = hiredCandidateRepository.findById(fellowshipCandidateDto.getId())
                 .orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
                         .INVALID_ID, "User not found with this id"));
         modelMapper.map(hiredCandidateModel,fellowshipCandidateDto);
