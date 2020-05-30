@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -59,7 +59,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/hirecandidates/hiredcandidatelist", "/hirecandidates/viewcandidateprofile",
                 "/fellowshipcandidates/jointhecandidate", "/fellowshipcandidates/updateinformation", "/swagger-resources/**",
                 "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/fellowshipcandidates/candidatecount",
-                "/bankdetails/updatebankdetails","/candidatequalification/updatequalificationdetails")
+                "/bankdetails/updatebankdetails","/candidatequalification/updatequalificationdetails","/uploaddocuments/doupload")
                 .permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
