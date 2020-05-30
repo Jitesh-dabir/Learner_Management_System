@@ -21,6 +21,7 @@ public class UploadFileServiceImpl implements IUploadFileService {
     @Autowired
     private UploadFileRepository uploadFileRepository;
 
+    //Method to upload document to database.
     @Override
     public UploadDocumentsModel doUpload(UploadDocumentsDto uploadDocumentsDto) {
         fellowshipCandidateRepository.findById(uploadDocumentsDto.getCandidateId())
