@@ -30,7 +30,7 @@ public class UploadDocumentsController {
         uploadDocumentsDto1.setAadhaarCard(aadhaarCard.getBytes());
         uploadDocumentsDto1.setPanCard(panCard.getBytes());
         UploadDocumentsModel uploadDocumentsModel = iUploadFileService.doUpload(uploadDocumentsDto1);
-        return new ResponseEntity<ResponseDto>(new ResponseDto(uploadDocumentsModel, ApplicationConfiguration.getMessageAccessor()
+        return new ResponseEntity<ResponseDto>(new ResponseDto(uploadDocumentsModel,200, ApplicationConfiguration.getMessageAccessor()
                 .getMessage("110")), HttpStatus.CREATED);
     }
 }

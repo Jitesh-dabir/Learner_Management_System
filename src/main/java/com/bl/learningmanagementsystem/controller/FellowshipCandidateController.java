@@ -25,18 +25,18 @@ public class FellowshipCandidateController {
     public ResponseEntity<ResponseDto> joinCandidate(@RequestParam(value = "id") long id) throws MessagingException {
         FellowshipCandidateModel fellowshipCandidateModel = fellowshipCandidateService.joinCandidate(id);
         fellowshipCandidateService.sentEmail(fellowshipCandidateModel);
-        return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, 200, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
     }
 
     @GetMapping("/candidatecount")
     public ResponseEntity<ResponseDto> candidatesCount() {
         int candidateCount = fellowshipCandidateService.CandidatesCount();
-        return new ResponseEntity<>(new ResponseDto(candidateCount, ApplicationConfiguration.getMessageAccessor().getMessage("112")), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(candidateCount, 200, ApplicationConfiguration.getMessageAccessor().getMessage("112")), HttpStatus.OK);
     }
 
     @PutMapping("/updateinformation")
     public ResponseEntity<ResponseDto> updatePersonalInformation(@Valid  @RequestBody FellowshipCandidateDto fellowshipCandidateDto) throws JsonMappingException {
         FellowshipCandidateModel fellowshipCandidateModel = fellowshipCandidateService.updateInformation(fellowshipCandidateDto);
-        return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, 200, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
     }
 }

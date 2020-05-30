@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> saveUser(@Valid @RequestBody UserDto userDto) {
         User user = userDetailsService.save(userDto);
-        return new ResponseEntity<>(new ResponseDto(user, ApplicationConfiguration.getMessageAccessor().getMessage("101")), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto(user, 200, ApplicationConfiguration.getMessageAccessor().getMessage("101")), HttpStatus.CREATED);
     }
 
     @PostMapping("/authenticate")
@@ -41,20 +41,20 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<ResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
         long userId = userDetailsService.loginUser(loginDto);
-        return new ResponseEntity<>(new ResponseDto(userId, ApplicationConfiguration.getMessageAccessor().getMessage("102")), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto(userId, 200, ApplicationConfiguration.getMessageAccessor().getMessage("102")), HttpStatus.OK);
     }
 
     @GetMapping("/requestresetpassword")
     public ResponseEntity<ResponseDto> requestResetPassword(@Valid @RequestParam(value = "email") String email) throws MessagingException, LmsAppServiceException {
         String resetPasswordToken = userDetailsService.getResetPasswordToken(email);
-        return new ResponseEntity<>(new ResponseDto(resetPasswordToken, ApplicationConfiguration.getMessageAccessor().getMessage("103")), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseDto(resetPasswordToken, 200,ApplicationConfiguration.getMessageAccessor().getMessage("103")), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/resetpassword")
     public ResponseEntity<ResponseDto> resetPassword(@Valid @RequestBody PasswordResetModelDto passwordRequestModel) {
         User user = userDetailsService.resetPassword(passwordRequestModel.getPassword(), passwordRequestModel.getToken());
         if (!user.equals(null))
-            return new ResponseEntity<>(new ResponseDto(user, ApplicationConfiguration.getMessageAccessor().getMessage("104")), HttpStatus.ACCEPTED);
-        return new ResponseEntity<>(new ResponseDto(user, ApplicationConfiguration.getMessageAccessor().getMessage("108")), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(new ResponseDto(user, 200, ApplicationConfiguration.getMessageAccessor().getMessage("104")), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseDto(user, 500, ApplicationConfiguration.getMessageAccessor().getMessage("108")), HttpStatus.ACCEPTED);
     }
 }
