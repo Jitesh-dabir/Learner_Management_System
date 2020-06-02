@@ -1,12 +1,10 @@
 package com.bl.learningmanagementsystem.service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
 import com.bl.learningmanagementsystem.dto.JwtRequestDto;
 import com.bl.learningmanagementsystem.dto.LoginDto;
 import com.bl.learningmanagementsystem.dto.UserDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
+import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.UserRepository;
 import com.bl.learningmanagementsystem.util.JwtTokenUtil;
 import org.modelmapper.ModelMapper;
@@ -23,11 +21,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bl.learningmanagementsystem.model.User;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.EntityManager;
+import java.util.ArrayList;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsService {
@@ -53,7 +49,11 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
     @Autowired
     private JavaMailSender sender;
 
-    //Method to load user by its username from database.
+    /**
+     * @param username
+     * @return response(Method to load user by its username from database.)
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByFirstName(username).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
@@ -62,7 +62,10 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
                 new ArrayList<>());
     }
 
-    //Method to valid user details and allow for lofin
+    /**
+     * @param loginDto
+     * @return response(Method to valid user details and allow for login)
+     */
     @Override
     public long loginUser(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.email).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
@@ -72,18 +75,24 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         return user.getId();
     }
 
-    //Method to register user and save to database
+    /**
+     * @param user
+     * @return response(Method to register user and save to database)
+     */
     @Override
     public User save(UserDto user) {
-        user.setCreatorStamp(LocalDateTime.now());
-        user.setCreatorUser(user.getFirstName());
-        user.setVerified("yes");
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
         User newUser = modelMapper.map(user, User.class);
+        User registeredUser = userRepository.save(newUser);
+        registeredUser.setCreatorUser(registeredUser.getId());
         return userRepository.save(newUser);
     }
 
-    //Method to reset password.
+    /**
+     * @param password
+     * @param token
+     * @return Method to reset password.
+     */
     @Override
     public User resetPassword(String password, String token) {
         String encodedPassword = bcryptEncoder.encode(password);
@@ -99,7 +108,12 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
                 .map(userRepository::save).get();
     }
 
-    //Method to get password reset token.
+    /**
+     * @param email
+     * @return Method to get password reset token.
+     * @throws MessagingException
+     * @throws LmsAppServiceException
+     */
     @Override
     public String getResetPasswordToken(String email) throws MessagingException, LmsAppServiceException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType
@@ -109,7 +123,11 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         return token;
     }
 
-    //Method to get authentication token
+    /**
+     * @param authenticationRequest
+     * @return Method to get authentication token
+     * @throws Exception
+     */
     @Override
     public String getAuthenticationToken(JwtRequestDto authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -119,7 +137,11 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         return token;
     }
 
-    //Method to authenticate user.
+    /**
+     * @param username, password
+     * @return Method to authenticate user.
+     * @throws Exception
+     */
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -130,7 +152,11 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
         }
     }
 
-    //Method to send reset password request email.
+    /**
+     * @param user, token
+     * @return Method to send reset password request email.
+     * @throws MessagingException
+     */
     public void sentEmail(User user, String token) throws MessagingException {
         String recipientAddress = user.getEmail();
         MimeMessage message = sender.createMimeMessage();
