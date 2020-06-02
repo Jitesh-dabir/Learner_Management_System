@@ -3,8 +3,12 @@ package com.bl.learningmanagementsystem.dto;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,10 +18,10 @@ public class UserDto {
     @NotNull
     private long id;
     @Size(max = 100)
-    @Pattern(regexp ="^[A-Z]+[A-Za-z0-9]{1,}$")
+    @Pattern(regexp = "^[A-Z]+[A-Za-z0-9]{1,}$")
     private String firstName;
     @Size(max = 100)
-    @Pattern(regexp ="^[A-Z]+[A-Za-z0-9]{1,}$")
+    @Pattern(regexp = "^[A-Z]+[A-Za-z0-9]{1,}$")
     private String lastName;
     @Email
     private String email;
@@ -27,5 +31,5 @@ public class UserDto {
     private String verified;
     @NotNull
     private LocalDateTime creatorStamp;
-    private String creatorUser;
+    private long creatorUser;
 }
