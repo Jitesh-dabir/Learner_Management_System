@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,9 +14,9 @@ import java.util.Date;
 public class UploadDocumentsDto {
     private long id;
     private long candidateId;
-    private byte[] aadhaarCard;
-    private byte[] panCard;
+    private String documentType;
+    private String documentPath;
     private String status;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
 }
