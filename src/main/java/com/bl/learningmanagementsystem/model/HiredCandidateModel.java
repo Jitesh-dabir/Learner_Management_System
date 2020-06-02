@@ -6,10 +6,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@Getter(AccessLevel.PUBLIC)
-@Setter(AccessLevel.PUBLIC)
+@Getter
+@Setter
 @Table(name = "hired_candidate")
 @Entity(name = "hired_candidate")
 public class HiredCandidateModel implements Serializable {
@@ -30,6 +31,6 @@ public class HiredCandidateModel implements Serializable {
     private String knowledgeRemark;
     private String aggregateRemark;
     private String status;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
 }
