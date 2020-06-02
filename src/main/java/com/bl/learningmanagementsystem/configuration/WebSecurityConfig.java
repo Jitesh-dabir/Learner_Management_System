@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/hirecandidates/hiredcandidatelist", "/hirecandidates/viewcandidateprofile",
                 "/fellowshipcandidates/jointhecandidate", "/fellowshipcandidates/updateinformation", "/swagger-resources/**",
                 "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/fellowshipcandidates/candidatecount",
-                "/bankdetails/updatebankdetails","/candidatequalification/updatequalificationdetails","/uploaddocuments/doupload")
+                "/fellowshipcandidates/updatebankdetails","/fellowshipcandidates/updatequalificationdetails","/fellowshipcandidates/doupload","/fellowshipcandidates/upload")
                 .permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
