@@ -2,6 +2,8 @@ package com.bl.learningmanagementsystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,5 +24,21 @@ public class User implements Serializable {
     private long contactNumber;
     private String verified;
     private LocalDateTime creatorStamp;
-    private String creatorUser;
+    private long creatorUser;
+
+    public LocalDateTime getCreatorStamp() {
+        return creatorStamp;
+    }
+
+    public void setCreatorStamp(LocalDateTime creatorStamp) {
+        this.creatorStamp = LocalDateTime.now();
+    }
+
+    public long getCreatorUser() {
+        return creatorUser;
+    }
+
+    public void setCreatorUser(long creatorUser) {
+        this.creatorUser = this.id;
+    }
 }
