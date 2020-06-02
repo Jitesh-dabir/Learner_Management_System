@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -41,6 +42,6 @@ public class CandidateQualificationDto {
     private String isTrainingDurationMonthVerified;
     private String otherTraining;
     private String isOtherTrainingVerified;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
 }
