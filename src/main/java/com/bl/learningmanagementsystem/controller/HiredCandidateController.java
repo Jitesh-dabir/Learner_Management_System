@@ -20,6 +20,12 @@ public class HiredCandidateController {
     @Autowired
     private IHiredCandidateService hiredCandidateService;
 
+    /**
+     *
+     * @param file
+     * @return isImported
+     * @throws IOException
+     */
     @PostMapping("/importhiredcandidate")
     public ResponseEntity<ResponseDto> importHiredCandidate(@RequestParam("file") MultipartFile file) throws IOException {
         boolean isImported = hiredCandidateService.getHiredCandidate(file);
@@ -27,18 +33,33 @@ public class HiredCandidateController {
                 .getMessage("109")), HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * @return list
+     */
     @GetMapping("/hiredcandidatelist")
     public ResponseEntity<List> hiredCandidate() {
         List list = hiredCandidateService.getHiredCandidates();
         return new ResponseEntity<List>(list, HttpStatus.MULTI_STATUS);
     }
 
+    /**
+     *
+     * @param candidateId
+     * @return hiredCandidateModel
+     */
     @GetMapping("/viewcandidateprofile")
     public ResponseEntity<ResponseDto> viewCandidateProfile(@RequestParam(value = "id") long candidateId) {
         HiredCandidateModel hiredCandidateModel = hiredCandidateService.findById(candidateId);
         return new ResponseEntity<ResponseDto>(new ResponseDto(hiredCandidateModel, 200,ApplicationConfiguration.getMessageAccessor().getMessage("105")), HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param email
+     * @param status
+     * @return hiredCandidateModel
+     */
     @PutMapping("/changestatus")
     public ResponseEntity<ResponseDto> setCandidateStatus(@RequestParam(value = "email") String email, @RequestParam(value = "status") String status) {
         HiredCandidateModel hiredCandidateModel = hiredCandidateService.setStatusResponse(email, status);
