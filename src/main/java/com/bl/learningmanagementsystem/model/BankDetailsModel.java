@@ -10,13 +10,14 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "candidate_bank_details")
+@Table(name = "candidate_bank_details", uniqueConstraints={@UniqueConstraint(columnNames = {"candidateId"})})
 @Entity(name = "candidate_bank_details")
 public class BankDetailsModel implements Serializable {
 
@@ -33,6 +34,25 @@ public class BankDetailsModel implements Serializable {
     private String isPanNumberVerified;
     private long addhaarNumber;
     private String isAddhaarNumVerified;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
+    @ManyToOne(fetch = FetchType.LAZY,optional=false)
+    @JoinColumn(name = "candidateId", referencedColumnName = "id", insertable=false, updatable=false)
+    private FellowshipCandidateModel fellowshipCandidateModel;
+
+    public LocalDateTime getCreatorStamp() {
+        return creatorStamp;
+    }
+
+    public void setCreatorStamp(LocalDateTime creatorStamp) {
+        this.creatorStamp = LocalDateTime.now();
+    }
+
+    public long getCreatorUser() {
+        return creatorUser;
+    }
+
+    public void setCreatorUser(long creatorUser) {
+        this.creatorUser = this.candidateId;
+    }
 }
