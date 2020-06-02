@@ -5,13 +5,12 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "fellowship_candidate")
 @Entity(name = "fellowship_candidate")
 public class FellowshipCandidateModel implements Serializable {
@@ -34,8 +33,8 @@ public class FellowshipCandidateModel implements Serializable {
     private String knowledgeRemark;
     private String aggregateRemark;
     private String status;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
     private Date birthDate;
     private String isBirthDateVerified;
     private String parentOccupation;
@@ -48,6 +47,20 @@ public class FellowshipCandidateModel implements Serializable {
     private String candidateStatus;
     private String documentStatus;
     private String remark;
-//    @OneToMany(mappedBy="fellowshipCandidate")
-//    private List<BankDetailsModel> bankDetailsModel;
+
+    public LocalDateTime getCreatorStamp() {
+        return creatorStamp;
+    }
+
+    public void setCreatorStamp(LocalDateTime creatorStamp) {
+        this.creatorStamp = creatorStamp;
+    }
+
+    public long getCreatorUser() {
+        return creatorUser;
+    }
+
+    public void setCreatorUser(long creatorUser) {
+        this.creatorUser = creatorUser;
+    }
 }
