@@ -19,6 +19,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +35,12 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     @Autowired
     private JavaMailSender sender;
 
-    //Method to read excel file and store data to database
+    /**
+     *
+     * @param filePath
+     * @return Method to read excel file and store data to database
+     * @throws IOException
+     */
     @Override
     public boolean getHiredCandidate(MultipartFile filePath) throws IOException {
         boolean flag = true;
@@ -86,9 +92,9 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
                         cell = (XSSFCell) cells.next();
                         hiredCandidateDto.setStatus(cell.getStringCellValue());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidateDto.setCreatorStamp(cell.getDateCellValue());
+                        hiredCandidateDto.setCreatorStamp(LocalDateTime.now());
                         cell = (XSSFCell) cells.next();
-                        hiredCandidateDto.setCreatorUser(cell.getStringCellValue());
+                        hiredCandidateDto.setCreatorUser(hiredCandidateDto.getId());
                         save(hiredCandidateDto);
                         sentEmail(hiredCandidateDto);
                     }
@@ -101,6 +107,11 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
         return true;
     }
 
+    /**
+     *
+     * @param hiredCandidateDto
+     * @return save details to database.
+     */
     @Override
     public void save(HiredCandidateDto hiredCandidateDto) {
         HiredCandidateModel hiredCandidateModel = modelMapper.map(hiredCandidateDto, HiredCandidateModel.class);
@@ -110,6 +121,10 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
         hiredCandidateRepository.save(hiredCandidateModel);
     }
 
+    /**
+     *
+     * @return list of hired candidate.
+     */
     @Override
     public List getHiredCandidates() {
         List<HiredCandidateModel> list = hiredCandidateRepository.findAll();
@@ -118,6 +133,11 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
         return list;
     }
 
+    /**
+     *
+     * @param userId
+     * @return candidate details.
+     */
     @Override
     public HiredCandidateModel findById(long userId) {
         return hiredCandidateRepository.findById(userId)
@@ -125,6 +145,12 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
                         .INVALID_ID, "User not found with this id"));
     }
 
+    /**
+     *
+     * @param email
+     * @param status
+     * @return candidate details with updated status.
+     */
     @Override
     public HiredCandidateModel setStatusResponse(String email, String status) {
         return hiredCandidateRepository.findByEmail(email)
@@ -134,7 +160,12 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
                 }).orElseThrow(() -> new LmsAppServiceException(LmsAppServiceException.exceptionType.DATA_NOT_FOUND, "Data not found"));
     }
 
-    //Method to send email
+    /**
+     *
+     * @param hiredCandidateDto
+     * @throws MessagingException
+     * sent email to each candidate.
+     */
     @Override
     public void sentEmail(HiredCandidateDto hiredCandidateDto) throws MessagingException {
         String recipientAddress = hiredCandidateDto.getEmail();
