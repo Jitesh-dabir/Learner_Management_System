@@ -1,17 +1,11 @@
 package com.bl.learningmanagementsystem.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Table(name = "candidate_documents")
 @Entity(name = "candidate_documents")
 public class UploadDocumentsModel {
@@ -19,9 +13,28 @@ public class UploadDocumentsModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private long candidateId;
-    private byte[] aadhaarCard;
-    private byte[] panCard;
+    private String documentType;
+    private String documentPath;
     private String status;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
+    @ManyToOne(fetch = FetchType.LAZY,optional=false)
+    @JoinColumn(name = "candidateId", referencedColumnName = "id", insertable=false, updatable=false)
+    private FellowshipCandidateModel fellowshipCandidateModel;
+
+    public LocalDateTime getCreatorStamp() {
+        return creatorStamp;
+    }
+
+    public void setCreatorStamp(LocalDateTime creatorStamp) {
+        this.creatorStamp = LocalDateTime.now();
+    }
+
+    public long getCreatorUser() {
+        return creatorUser;
+    }
+
+    public void setCreatorUser(long creatorUser) {
+        this.creatorUser = this.candidateId;
+    }
 }
