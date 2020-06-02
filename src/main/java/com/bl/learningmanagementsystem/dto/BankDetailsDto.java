@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,9 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class BankDetailsDto {
 
-    @NotNull
     private long id;
-    @NotBlank(message = "Candidate id is mandatory")
     private long candidateId;
     @NotNull
     private String name;
@@ -37,6 +34,6 @@ public class BankDetailsDto {
     private long addhaarNumber;
     @NotNull
     private String isAddhaarNumVerified;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
 }
