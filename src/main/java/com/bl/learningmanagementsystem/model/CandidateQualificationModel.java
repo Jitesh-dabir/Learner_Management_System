@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -36,6 +37,25 @@ public class CandidateQualificationModel {
     private String isTrainingDurationMonthVerified;
     private String otherTraining;
     private String isOtherTrainingVerified;
-    private Date creatorStamp;
-    private String creatorUser;
+    private LocalDateTime creatorStamp;
+    private long creatorUser;
+    @ManyToOne(fetch = FetchType.LAZY,optional=false)
+    @JoinColumn(name = "candidateId", referencedColumnName = "id", insertable=false, updatable=false)
+    private FellowshipCandidateModel fellowshipCandidateModel;
+
+    public LocalDateTime getCreatorStamp() {
+        return creatorStamp;
+    }
+
+    public void setCreatorStamp(LocalDateTime creatorStamp) {
+        this.creatorStamp = LocalDateTime.now();
+    }
+
+    public long getCreatorUser() {
+        return creatorUser;
+    }
+
+    public void setCreatorUser(long creatorUser) {
+        this.creatorUser = this.candidateId;
+    }
 }
