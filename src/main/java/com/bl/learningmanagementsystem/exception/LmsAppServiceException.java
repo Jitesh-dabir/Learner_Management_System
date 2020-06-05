@@ -13,6 +13,7 @@ public class LmsAppServiceException extends RuntimeException {
         this.message=message;
     }
 
+    //Enum for exception
     public enum exceptionType {
         USER_NOT_FOUND,INVALID_EMAIL_ID,INVALID_PASSWORD,INVALID_TOKEN,DATA_NOT_FOUND,INVALID_ID;
     }
