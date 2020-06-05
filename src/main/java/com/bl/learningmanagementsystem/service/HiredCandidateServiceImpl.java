@@ -10,18 +10,23 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HiredCandidateServiceImpl implements IHiredCandidateService {
@@ -35,8 +40,18 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     @Autowired
     private JavaMailSender sender;
 
+    // needed for HTML email templating
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    // externalize the templates/*.html files
+    @Value("${jobOffer.mail.defaultMailTemplate}")
+    private String defaultMailTemplate;
+
+    // set multiple context variables key/value pairs for email template
+    private Map<String, Object> responseMap = new HashMap<String, Object>();
+
     /**
-     *
      * @param filePath
      * @return Method to read excel file and store data to database
      * @throws IOException
@@ -108,7 +123,6 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     }
 
     /**
-     *
      * @param hiredCandidateDto
      * @return save details to database.
      */
@@ -122,7 +136,6 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     }
 
     /**
-     *
      * @return list of hired candidate.
      */
     @Override
@@ -134,7 +147,6 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     }
 
     /**
-     *
      * @param userId
      * @return candidate details.
      */
@@ -146,7 +158,6 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     }
 
     /**
-     *
      * @param email
      * @param status
      * @return candidate details with updated status.
@@ -164,18 +175,28 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
      *
      * @param hiredCandidateDto
      * @throws MessagingException
-     * sent email to each candidate.
      */
     @Override
     public void sentEmail(HiredCandidateDto hiredCandidateDto) throws MessagingException {
         String recipientAddress = hiredCandidateDto.getEmail();
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setTo(recipientAddress);
         String accept = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Accept";
         String reject = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Reject";
-        helper.setText("Hii " + hiredCandidateDto.getFirstName() + "\n" + "You are selected for BridgeLabz fellowship program," +
-                " if You want to join click on below link (ACCEPT) \n" + accept + "\n otherwise (REJECT)\n" + reject);
+        String templateKeyName = "name";
+        String templateValueName = hiredCandidateDto.getFirstName();
+        String templateKeyAccept = "accept";
+        String templateValueAccept = accept;
+        String templateKeyReject = "reject";
+        String templateValueReject = reject;
+        responseMap.put(templateKeyName, templateValueName);
+        responseMap.put(templateKeyAccept, templateValueAccept);
+        responseMap.put(templateKeyReject, templateValueReject);
+        MimeMessage message = sender.createMimeMessage();
+        Context context = new Context();
+        responseMap.forEach((name, value) -> context.setVariable(name, value));
+        String content = templateEngine.process(defaultMailTemplate, context);
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(recipientAddress);
+        helper.setText(content, true); // make html email
         helper.setSubject("Invitation to join BridgeLabz Fellowship Program");
         sender.send(message);
     }
