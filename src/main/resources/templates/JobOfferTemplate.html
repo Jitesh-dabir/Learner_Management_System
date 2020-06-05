@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CherryShoe Html Email Example</title>
+</head>
+<body>
+<p>
+    Dear <span th:text="${name}"></span>, <br></br><br></br>
+    You are selected for BridgeLabz fellowship program, if You are interested to join fellowship program please reply.
+</p>
+<div>
+    <tr>
+        <td>
+            <a th:href="@{${accept}}"><input type="button" name="value" th:value="Accept" readonly="true"
+                                             style="background-color:green;color:white;width:150px;height:40px;"/></a>
+        </td>
+        <td>
+            <a th:href="@{${reject}}"><input type="button" name="value" th:value="Reject" readonly="true"
+                                             style="background-color:red;color:white;width:150px;height:40px;"/></a>
+        </td>
+    </tr>
+</div>
+</body>
+</html>
