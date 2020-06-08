@@ -1,9 +1,11 @@
 package com.bl.learningmanagementsystem.service;
 
+import com.bl.learningmanagementsystem.dto.EmailDto;
 import com.bl.learningmanagementsystem.dto.HiredCandidateDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
+import com.bl.learningmanagementsystem.util.RabbitMQUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -43,6 +45,12 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     // needed for HTML email templating
     @Autowired
     private TemplateEngine templateEngine;
+
+    @Autowired
+    private RabbitMQUtil rabbitMQ;
+
+    @Autowired
+    private EmailDto mailDTO;
 
     // externalize the templates/*.html files
     @Value("${jobOffer.mail.defaultMailTemplate}")
@@ -178,26 +186,8 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
      */
     @Override
     public void sentEmail(HiredCandidateDto hiredCandidateDto) throws MessagingException {
-        String recipientAddress = hiredCandidateDto.getEmail();
-        String accept = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Accept";
-        String reject = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Reject";
-        String templateKeyName = "name";
-        String templateValueName = hiredCandidateDto.getFirstName();
-        String templateKeyAccept = "accept";
-        String templateValueAccept = accept;
-        String templateKeyReject = "reject";
-        String templateValueReject = reject;
-        responseMap.put(templateKeyName, templateValueName);
-        responseMap.put(templateKeyAccept, templateValueAccept);
-        responseMap.put(templateKeyReject, templateValueReject);
-        MimeMessage message = sender.createMimeMessage();
-        Context context = new Context();
-        responseMap.forEach((name, value) -> context.setVariable(name, value));
-        String content = templateEngine.process(defaultMailTemplate, context);
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo(recipientAddress);
-        helper.setText(content, true); // make html email
-        helper.setSubject("Invitation to join BridgeLabz Fellowship Program");
-        sender.send(message);
+        mailDTO.setTo( hiredCandidateDto.getEmail());
+        mailDTO.setSubject("Invitation to join BridgeLabz Fellowship Program");
+        rabbitMQ.sendHiringMail(mailDTO, hiredCandidateDto);
     }
 }

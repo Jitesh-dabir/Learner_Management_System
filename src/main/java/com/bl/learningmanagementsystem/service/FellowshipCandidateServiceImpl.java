@@ -1,13 +1,11 @@
 package com.bl.learningmanagementsystem.service;
 
 import com.bl.learningmanagementsystem.configuration.ApplicationConfiguration;
-import com.bl.learningmanagementsystem.dto.BankDetailsDto;
-import com.bl.learningmanagementsystem.dto.CandidateQualificationDto;
-import com.bl.learningmanagementsystem.dto.FellowshipCandidateDto;
-import com.bl.learningmanagementsystem.dto.UploadDocumentsDto;
+import com.bl.learningmanagementsystem.dto.*;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.*;
 import com.bl.learningmanagementsystem.repository.*;
+import com.bl.learningmanagementsystem.util.RabbitMQUtil;
 import com.cloudinary.Cloudinary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
@@ -56,6 +54,12 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
     @Autowired
     private UploadFileRepository uploadFileRepository;
 
+    @Autowired
+    private RabbitMQUtil rabbitMQ;
+
+    @Autowired
+    private EmailDto mailDTO;
+
     /**
      *
      * @param id
@@ -81,19 +85,16 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
      */
     @Override
     public void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException {
-        String recipientAddress = fellowshipCandidateModel.getEmail();
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setTo(recipientAddress);
-        helper.setText("Dear " + fellowshipCandidateModel.getFirstName() +
+        mailDTO.setTo(fellowshipCandidateModel.getEmail());
+        mailDTO.setBody("Dear " + fellowshipCandidateModel.getFirstName() +
                 "\n Please find attached the terms and conditions of your employment," +
                 " should you accept this offer letter." +
                 " We would like to have your response by [date]. In the meantime," +
                 " please feel free to contact me or [Manager_name] via email or phone at [provide contact details]," +
                 " if you have any questions.\n" +
                 "\n We are all looking forward to having you on our team. ");
-        helper.setSubject("Job offer notification");
-        sender.send(message);
+        mailDTO.setSubject("Job offer notification");
+        rabbitMQ.sendMail(mailDTO);
     }
 
     /**
