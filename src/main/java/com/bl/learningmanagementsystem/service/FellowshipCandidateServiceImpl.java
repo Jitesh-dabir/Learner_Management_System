@@ -37,9 +37,6 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
     private ModelMapper modelMapper;
 
     @Autowired
-    private JavaMailSender sender;
-
-    @Autowired
     private CandidateQualificationRepository candidateQualificationRepository;
 
     @Autowired
