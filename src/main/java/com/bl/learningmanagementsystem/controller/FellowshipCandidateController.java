@@ -9,6 +9,7 @@ import com.bl.learningmanagementsystem.model.CandidateQualificationModel;
 import com.bl.learningmanagementsystem.model.FellowshipCandidateModel;
 import com.bl.learningmanagementsystem.response.ResponseDto;
 import com.bl.learningmanagementsystem.service.IFellowshipCandidateService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class FellowshipCandidateController {
      *
      */
     @PostMapping("/jointhecandidate")
-    public ResponseEntity<ResponseDto> joinCandidate(@RequestParam(value = "id") long id) throws MessagingException {
+    public ResponseEntity<ResponseDto> joinCandidate(@RequestParam(value = "id") long id) throws MessagingException, JsonProcessingException {
         FellowshipCandidateModel fellowshipCandidateModel = fellowshipCandidateService.joinCandidate(id);
         fellowshipCandidateService.sentEmail(fellowshipCandidateModel);
         return new ResponseEntity<>(new ResponseDto(fellowshipCandidateModel, 200, ApplicationConfiguration.getMessageAccessor().getMessage("111")), HttpStatus.OK);
