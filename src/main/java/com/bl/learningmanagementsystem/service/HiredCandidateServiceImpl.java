@@ -5,7 +5,9 @@ import com.bl.learningmanagementsystem.dto.HiredCandidateDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.HiredCandidateModel;
 import com.bl.learningmanagementsystem.repository.HiredCandidateRepository;
-import com.bl.learningmanagementsystem.util.RabbitMQUtil;
+import com.bl.learningmanagementsystem.util.IRabbitMq;
+import com.bl.learningmanagementsystem.util.RabbitMqUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -13,15 +15,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -40,17 +39,10 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private JavaMailSender sender;
+    private IRabbitMq rabbitMQ;
 
-    // needed for HTML email templating
     @Autowired
     private TemplateEngine templateEngine;
-
-    @Autowired
-    private RabbitMQUtil rabbitMQ;
-
-    @Autowired
-    private EmailDto mailDTO;
 
     // externalize the templates/*.html files
     @Value("${jobOffer.mail.defaultMailTemplate}")
@@ -185,9 +177,20 @@ public class HiredCandidateServiceImpl implements IHiredCandidateService {
      * @throws MessagingException
      */
     @Override
-    public void sentEmail(HiredCandidateDto hiredCandidateDto) throws MessagingException {
+    public void sentEmail(HiredCandidateDto hiredCandidateDto) throws MessagingException, JsonProcessingException {
+        String accept = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Accept";
+        String reject = "http://localhost:8084/hiredcandidated/changestatus?email=" + hiredCandidateDto.getEmail() + "" + "&status=Reject";
+        responseMap.put("name", hiredCandidateDto.getFirstName());
+        responseMap.put("accept", accept);
+        responseMap.put("reject", reject);
+        Context context = new Context();
+        responseMap.forEach((name, value) -> context.setVariable(name, value));
+        String content = templateEngine.process(defaultMailTemplate, context);
+        EmailDto mailDTO = new EmailDto();
         mailDTO.setTo( hiredCandidateDto.getEmail());
         mailDTO.setSubject("Invitation to join BridgeLabz Fellowship Program");
-        rabbitMQ.sendHiringMail(mailDTO, hiredCandidateDto);
+        mailDTO.setText(content);
+        rabbitMQ.send(mailDTO);
+        //rabbitMQ.sendHiringMail(mailDTO, hiredCandidateDto);
     }
 }
