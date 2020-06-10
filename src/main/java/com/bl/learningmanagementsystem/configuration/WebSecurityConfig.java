@@ -54,12 +54,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/hirecandidates/changestatus", "/users/authenticate", "/users/register",
-                "/users/resetpassword", "/users/requestresetpassword", "/hirecandidates/importhiredcandidate",
+                .authorizeRequests().antMatchers("/hirecandidates/changestatus", "/users/*",
+                 "/hirecandidates/importhiredcandidate",
                 "/hirecandidates/hiredcandidatelist", "/hirecandidates/viewcandidateprofile",
                 "/fellowshipcandidates/jointhecandidate", "/fellowshipcandidates/updateinformation", "/swagger-resources/**",
                 "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/fellowshipcandidates/candidatecount",
-                "/fellowshipcandidates/updatebankdetails","/fellowshipcandidates/updatequalificationdetails","/fellowshipcandidates/doupload","/fellowshipcandidates/upload")
+                "/fellowshipcandidates/updatebankdetails","/fellowshipcandidates/updatequalificationdetails","/fellowshipcandidates/doupload",
+                "/fellowshipcandidates/upload")
                 .permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
