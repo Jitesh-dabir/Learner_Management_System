@@ -1,22 +1,24 @@
 package com.bl.learningmanagementsystem.controller;
 
 import com.bl.learningmanagementsystem.configuration.ApplicationConfiguration;
-import com.bl.learningmanagementsystem.dto.JwtRequestDto;
 import com.bl.learningmanagementsystem.dto.LoginDto;
 import com.bl.learningmanagementsystem.dto.PasswordResetModelDto;
 import com.bl.learningmanagementsystem.dto.UserDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.User;
-import com.bl.learningmanagementsystem.response.JwtResponseDto;
 import com.bl.learningmanagementsystem.response.ResponseDto;
 import com.bl.learningmanagementsystem.service.IUserDetailsService;
+import com.bl.learningmanagementsystem.util.JwtTokenUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -27,7 +29,6 @@ public class UserController {
     private IUserDetailsService userDetailsService;
 
     /**
-     *
      * @param userDto
      * @return response(Registered user)
      */
@@ -38,43 +39,28 @@ public class UserController {
     }
 
     /**
-     *
-     * @param authenticationRequest
-     * @return response(token)
-     * @throws Exception
-     */
-    @PostMapping("/authenticate")
-    public ResponseEntity<JwtResponseDto> createAuthenticationToken(@RequestBody JwtRequestDto authenticationRequest) throws Exception {
-        String token = userDetailsService.getAuthenticationToken(authenticationRequest);
-        return new ResponseEntity<>(new JwtResponseDto(token, ApplicationConfiguration.getMessageAccessor().getMessage("106")), HttpStatus.CREATED);
-    }
-
-    /**
-     *
      * @param loginDto
      * @return response(userId)
      */
-    @GetMapping("/login")
-    public ResponseEntity<ResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
-        long userId = userDetailsService.loginUser(loginDto);
-        return new ResponseEntity<>(new ResponseDto(userId, 200, ApplicationConfiguration.getMessageAccessor().getMessage("102")), HttpStatus.OK);
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginDto loginDto) throws Exception {
+        Map<Object, Object> objectObjectMap = userDetailsService.loginUser(loginDto);
+        return new ResponseEntity<>(new ResponseDto(objectObjectMap, 200, ApplicationConfiguration.getMessageAccessor().getMessage("102")), HttpStatus.OK);
     }
 
     /**
-     *
      * @param email
      * @return resetPasswordToken
      * @throws MessagingException
      * @throws LmsAppServiceException
      */
     @GetMapping("/requestresetpassword")
-    public ResponseEntity<ResponseDto> requestResetPassword(@Valid @RequestParam(value = "email") String email) throws MessagingException, LmsAppServiceException {
+    public ResponseEntity<ResponseDto> requestResetPassword(@Valid @RequestParam(value = "email") String email) throws MessagingException, LmsAppServiceException, JsonProcessingException {
         String resetPasswordToken = userDetailsService.getResetPasswordToken(email);
-        return new ResponseEntity<>(new ResponseDto(resetPasswordToken, 200,ApplicationConfiguration.getMessageAccessor().getMessage("103")), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseDto(resetPasswordToken, 200, ApplicationConfiguration.getMessageAccessor().getMessage("103")), HttpStatus.ACCEPTED);
     }
 
     /**
-     *
      * @param passwordRequestModel
      * @return response(Reseted password)
      */
