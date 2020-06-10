@@ -21,19 +21,6 @@ public class RedisConfiguration {
     @Value("${spring.redis.password}")
     private String REDIS_PASSWORD;
 
-    //    @Bean
-//    JedisConnectionFactory jedisConnectionFactory() {
-//        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(REDIS_HOSTNAME, REDIS_PORT);
-//        redisStandaloneConfiguration.setPassword(RedisPassword.of(REDIS_PASSWORD));
-//        return new JedisConnectionFactory(redisStandaloneConfiguration);
-//    }
-//
-//    @Bean
-//    public RedisTemplate redisTemplate() {
-//        RedisTemplate redisTemplate = new RedisTemplate<>();
-//        redisTemplate.setConnectionFactory(jedisConnectionFactory());
-//        return redisTemplate;
-//    }
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
