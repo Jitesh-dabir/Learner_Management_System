@@ -1,11 +1,25 @@
 package com.bl.learningmanagementsystem.dto;
 
-import javax.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.Setter;
 
-public class LoginDto {
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
+
+@Getter
+@Setter
+public class LoginDto implements Serializable {
     @NotEmpty(message = "Please Enter Email")
-    public String email;
+    private String email;
 
     @NotEmpty(message = "Please Enter Password")
-    public String password;
+    private String password;
+
+    @Override
+    public String toString() {
+        return "LoginDto{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
