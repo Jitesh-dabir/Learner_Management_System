@@ -8,6 +8,7 @@ import com.bl.learningmanagementsystem.dto.UploadDocumentsDto;
 import com.bl.learningmanagementsystem.model.BankDetailsModel;
 import com.bl.learningmanagementsystem.model.CandidateQualificationModel;
 import com.bl.learningmanagementsystem.model.FellowshipCandidateModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
 public interface IFellowshipCandidateService {
     FellowshipCandidateModel joinCandidate(long id) throws MessagingException;
 
-    void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException;
+    void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException, JsonProcessingException;
 
     int CandidatesCount();
 

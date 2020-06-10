@@ -5,18 +5,20 @@ import com.bl.learningmanagementsystem.dto.*;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.*;
 import com.bl.learningmanagementsystem.repository.*;
-import com.bl.learningmanagementsystem.util.RabbitMQUtil;
+import com.bl.learningmanagementsystem.util.IRabbitMq;
+import com.bl.learningmanagementsystem.util.RabbitMqUtil;
 import com.cloudinary.Cloudinary;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,7 +54,7 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
     private UploadFileRepository uploadFileRepository;
 
     @Autowired
-    private RabbitMQUtil rabbitMQ;
+    private IRabbitMq rabbitMQ;
 
     @Autowired
     private EmailDto mailDTO;
@@ -81,9 +83,9 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
      * response(Sent email to candidates)
      */
     @Override
-    public void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException {
+    public void sentEmail(FellowshipCandidateModel fellowshipCandidateModel) throws MessagingException, JsonProcessingException {
         mailDTO.setTo(fellowshipCandidateModel.getEmail());
-        mailDTO.setBody("Dear " + fellowshipCandidateModel.getFirstName() +
+        mailDTO.setText("Dear " + fellowshipCandidateModel.getFirstName() +
                 "\n Please find attached the terms and conditions of your employment," +
                 " should you accept this offer letter." +
                 " We would like to have your response by [date]. In the meantime," +
@@ -91,7 +93,8 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
                 " if you have any questions.\n" +
                 "\n We are all looking forward to having you on our team. ");
         mailDTO.setSubject("Job offer notification");
-        rabbitMQ.sendMail(mailDTO);
+        rabbitMQ.send(mailDTO);
+        //rabbitMQ.sendMail(mailDTO);
     }
 
     /**
