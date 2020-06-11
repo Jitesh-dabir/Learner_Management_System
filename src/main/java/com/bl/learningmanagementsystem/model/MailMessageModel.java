@@ -4,8 +4,10 @@ package com.bl.learningmanagementsystem.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class MailMessageModel {
+public class MailMessageModel implements Serializable {
     @JSONField(name = "from")
     private String from;
 
