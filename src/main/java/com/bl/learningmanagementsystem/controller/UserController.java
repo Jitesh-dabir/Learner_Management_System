@@ -48,7 +48,7 @@ public class UserController {
         return new ResponseEntity<>(new ResponseDto(objectObjectMap, 200, ApplicationConfiguration.getMessageAccessor().getMessage("102")), HttpStatus.OK);
     }
 
-    /**
+    /** Return token to change password
      * @param email
      * @return resetPasswordToken
      * @throws MessagingException
@@ -60,7 +60,7 @@ public class UserController {
         return new ResponseEntity<>(new ResponseDto(resetPasswordToken, 200, ApplicationConfiguration.getMessageAccessor().getMessage("103")), HttpStatus.ACCEPTED);
     }
 
-    /**
+    /** Change password
      * @param passwordRequestModel
      * @return response(Reseted password)
      */
