@@ -1,8 +1,6 @@
 package com.bl.learningmanagementsystem.configuration;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -27,13 +25,11 @@ public class LoggingConfiguration {
     public Object applicationLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         final StopWatch stopWatch = new StopWatch();
-        //ObjectMapper mapper = new ObjectMapper();
         String methodName = proceedingJoinPoint.getSignature().getName();
         String className = proceedingJoinPoint.getTarget().getClass().toString();
         Object[] array = proceedingJoinPoint.getArgs();
         log.info("Method invoked" + className + ":" + methodName + "()"
                 + "arguments" + Arrays.toString(array));
-        //Measure method execution time
         stopWatch.start();
         Object object = proceedingJoinPoint.proceed();
         stopWatch.stop();
@@ -42,15 +38,5 @@ public class LoggingConfiguration {
                 + "Response" + String.valueOf(object));
         log.info("Execution time of " + className + "." + methodName + " :: " + stopWatch.getTotalTimeMillis() + " ms");
         return object;
-    }
-
-    @Pointcut(value= "execution(* com.bl.learningmanagementsystem.*.*.*(..) )")
-    private void logAfterWithdraw() { }
-
-    // Method is executed after the method matching with a pointcut expression.
-    @AfterThrowing(value= "logAfterWithdraw()", throwing= "exception")
-    public void afterThrowingAdvice(JoinPoint jp, Throwable exception) {
-        System.out.println("Inside afterThrowingAdvice() method....= " + jp.getSignature().getName() + " method");
-        System.out.println("Exception= " + exception);
     }
 }
