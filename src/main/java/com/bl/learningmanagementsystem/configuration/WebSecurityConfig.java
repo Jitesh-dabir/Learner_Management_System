@@ -1,7 +1,6 @@
 package com.bl.learningmanagementsystem.configuration;
 
 import com.bl.learningmanagementsystem.filter.JwtRequestFilter;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,13 +53,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/hirecandidates/changestatus", "/users/*",
-                 "/hirecandidates/importhiredcandidate",
-                "/hirecandidates/hiredcandidatelist", "/hirecandidates/viewcandidateprofile",
-                "/fellowshipcandidates/jointhecandidate", "/fellowshipcandidates/updateinformation", "/swagger-resources/**",
-                "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/fellowshipcandidates/candidatecount",
-                "/fellowshipcandidates/updatebankdetails","/fellowshipcandidates/updatequalificationdetails","/fellowshipcandidates/doupload",
-                "/fellowshipcandidates/upload")
+                .authorizeRequests().antMatchers("/hirecandidates/changestatus",
+                "/hirecandidates/importhiredcandidate", "/hirecandidates/hiredcandidatelist",
+                "/hirecandidates/viewcandidateprofile", "/fellowshipcandidates/jointhecandidate",
+                "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**",
+                "/fellowshipcandidates/candidatecount")
                 .permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
