@@ -28,7 +28,7 @@ public class FellowshipCandidateController {
     private IFellowshipCandidateService fellowshipCandidateService;
 
     /**
-     *
+     * Join the candidates to fellowship program
      * @param id
      * @return response(join the candidate to company)
      * @throws MessagingException
@@ -42,7 +42,7 @@ public class FellowshipCandidateController {
     }
 
     /**
-     *
+     * Return the candidate count
      * @return response(candidateCount)
      */
     @GetMapping("/candidatecount")
@@ -52,7 +52,7 @@ public class FellowshipCandidateController {
     }
 
     /**
-     *
+     * Update cndidate personal information
      * @param fellowshipCandidateDto
      * @return response(Updated candidate information)
      * @throws JsonMappingException
@@ -64,7 +64,7 @@ public class FellowshipCandidateController {
     }
 
     /**
-     *
+     * Update candidate qualification details
      * @param candidateQualificationDto
      * @return response(Updated qualification information)
      */
@@ -75,7 +75,7 @@ public class FellowshipCandidateController {
     }
 
     /**
-     *
+     * Update candidate bank details
      * @param bankDetailsDto
      * @return response(Updated bank details)
      */
@@ -86,7 +86,7 @@ public class FellowshipCandidateController {
     }
 
     /**
-     *
+     * Upload candidate documents
      * @param uploadDocumentsDto
      * @param file
      * @return response(Url of data)
