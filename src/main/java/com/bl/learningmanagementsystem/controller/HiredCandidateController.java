@@ -21,7 +21,7 @@ public class HiredCandidateController {
     private IHiredCandidateService hiredCandidateService;
 
     /**
-     *
+     * Import selected candidates to database
      * @param file
      * @return isImported
      * @throws IOException
@@ -35,7 +35,7 @@ public class HiredCandidateController {
 
     /**
      *
-     * @return list
+     * @return list of hired candidates
      */
     @GetMapping("/hiredcandidatelist")
     public ResponseEntity<List> hiredCandidate() {
@@ -44,7 +44,7 @@ public class HiredCandidateController {
     }
 
     /**
-     *
+     * View candidate profile by id
      * @param candidateId
      * @return hiredCandidateModel
      */
@@ -55,7 +55,7 @@ public class HiredCandidateController {
     }
 
     /**
-     *
+     * Change candidate onboarding status
      * @param email
      * @param status
      * @return hiredCandidateModel
