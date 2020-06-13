@@ -22,4 +22,8 @@ public class RedisUtil implements Serializable {
     public Map<Object, Object> getAll(String redisKey) {
         return redisTemplate.opsForHash().entries(redisKey);
     }
+
+    public Map<Object, Object> getToken(String redisKey, String userId) {
+        return (Map<Object, Object>) redisTemplate.opsForHash().get(redisKey, userId);
+    }
 }
