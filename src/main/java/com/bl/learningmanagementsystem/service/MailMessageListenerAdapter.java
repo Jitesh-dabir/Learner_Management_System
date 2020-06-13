@@ -25,7 +25,6 @@ public class MailMessageListenerAdapter extends MessageListenerAdapter {
      */
     @Override
     public void onMessage(Message message, Channel channel) {
-        System.out.println(message.getMessageProperties().getConsumerQueue());
         try {
             String messageBody = new String(message.getBody());
             MailMessageModel mailMessageModel = JSONObject.toJavaObject(JSONObject.parseObject(messageBody), MailMessageModel.class);
