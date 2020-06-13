@@ -94,7 +94,6 @@ public class FellowshipCandidateServiceImpl implements IFellowshipCandidateServi
                 "\n We are all looking forward to having you on our team. ");
         mailDTO.setSubject("Job offer notification");
         rabbitMQ.send(mailDTO);
-        //rabbitMQ.sendMail(mailDTO);
     }
 
     /**
