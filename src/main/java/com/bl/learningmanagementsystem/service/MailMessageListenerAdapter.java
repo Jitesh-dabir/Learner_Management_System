@@ -19,7 +19,7 @@ public class MailMessageListenerAdapter extends MessageListenerAdapter {
     private JavaMailSender mailSender;
 
     /**
-     *
+     * Listene message from queue
      * @param message
      * @param channel
      */
@@ -40,6 +40,7 @@ public class MailMessageListenerAdapter extends MessageListenerAdapter {
     }
 
     /**
+     * Send email to destination address
      * @param to
      * @param subject
      * @param text
