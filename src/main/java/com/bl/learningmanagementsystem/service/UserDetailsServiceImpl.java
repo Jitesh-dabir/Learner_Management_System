@@ -6,10 +6,7 @@ import com.bl.learningmanagementsystem.dto.UserDto;
 import com.bl.learningmanagementsystem.exception.LmsAppServiceException;
 import com.bl.learningmanagementsystem.model.User;
 import com.bl.learningmanagementsystem.repository.UserRepository;
-import com.bl.learningmanagementsystem.util.IRabbitMq;
-import com.bl.learningmanagementsystem.util.JwtTokenUtil;
-import com.bl.learningmanagementsystem.util.RabbitMqUtil;
-import com.bl.learningmanagementsystem.util.RedisUtil;
+import com.bl.learningmanagementsystem.util.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +54,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, IUserDetailsS
     private JavaMailSender sender;
 
     @Autowired
-    private RedisUtil redisUtil;
+    private IRedisUtil redisUtil;
 
     @Autowired
     private IRabbitMq rabbitMq;
